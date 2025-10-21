@@ -1,0 +1,25 @@
+xaeromaps_waystones:
+  config:
+    title: "Xaero's Waystonesの設定"
+    category:
+      general:
+        name: "一般"
+        tooltip: "一般設定"
+    option:
+      waypoint_icon:
+        name: "ウェイポイントのアイコン"
+        description: "1~2文字"
+      waypoint_name_template:
+        name: "ウェイポイント名のテンプレート"
+        description:
+          - "文字列の中の"
+          - text: "{waystone_name}"
+            color: #ff00ff
+          - "はウェイポイントの名前に置き換えられる。"
+      waypoint_color_fallback:
+        name: "フォールバックカラー"
+        description: "転移ポイントにカラーが設定されていない場合のフォールバックカラー。"
+    group:
+      waypoint_colors:
+        name: "ウェイポイントのカラー"
+        description: "転移ポイントに応じたカラーの対応表。"
