@@ -62,7 +62,7 @@ jobs:
           gradle-home-cache-cleanup: true
       - run: |
           ./gradlew --parallel --build-cache \
-            "Set active version to ${{ matrix.version }}" \
+            "Set active project to ${{matrix.version}}" \
             dependencies
       - run: ./gradlew --parallel --build-cache --max-workers=4 --no-daemon build
 #      - run: bunx semantic-release
