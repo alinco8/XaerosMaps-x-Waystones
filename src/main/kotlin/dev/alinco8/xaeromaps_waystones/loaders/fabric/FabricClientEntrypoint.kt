@@ -6,7 +6,7 @@ import dev.alinco8.xaeromaps_waystones.network.WaystoneActivatedPacket
 import dev.alinco8.xaeromaps_waystones.network.WaystoneRemovedPacket
 import net.fabricmc.api.ClientModInitializer
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 
 class FabricClientEntrypoint : ClientModInitializer {
@@ -20,6 +20,11 @@ class FabricClientEntrypoint : ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(
             WaystoneRemovedPacket.TYPE
         ) { packet, _ -> WaystoneRemovedPacket.handle(packet) }
+
+        // Client EVents
+        ClientPlayConnectionEvents.DISCONNECT.register { _, _ ->
+            XaerosMapsWaystonesMod.onLeaveWorld()
+        }
     }
 }
 //?}

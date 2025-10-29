@@ -27,7 +27,7 @@ val loaderName = when {
 }
 
 val modId = prop("mod.id", true)!!
-val modVersion = prop("mod.version", true)!!
+val modVersion = System.getenv("MOD_VERSION") ?: property("mod.version")!!.toString()
 val modRepo = prop("mod.repo", true)!!
 
 modstitch.apply {
@@ -57,7 +57,7 @@ modstitch.apply {
 
     metadata {
         modId = prop("mod.id", true)!!
-        modVersion = prop("mod.version", true)!!
+        modVersion = System.getenv("MOD_VERSION") ?: property("mod.version")!!.toString()
         modName = "Xaero's Maps x Waystones"
         modDescription =
             "This mod adds compatibility between Xaero's Minimap/World Map and Waystones, allowing you to easily view the locations of your Waystones on the map."

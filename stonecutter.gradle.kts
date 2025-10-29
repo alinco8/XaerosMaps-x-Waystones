@@ -4,14 +4,32 @@ plugins {
 }
 stonecutter active "1.21.1-fabric"
 
-val modVersion = property("mod.version")!!.toString()
+val modVersion = System.getenv("MOD_VERSION") ?: property("mod.version")!!.toString()
+
+// タスク実行前にchangelogを取得
+val changelogContent: String by lazy {
+    System.getenv("CHANGELOG") ?: run {
+        if (gradle.startParameter.taskNames.any { it.contains("publish", ignoreCase = true) }) {
+            println("Enter changelog (press Ctrl+D when finished):")
+            System.`in`.bufferedReader().use { it.readText() }.trim().also {
+                if (it.isEmpty()) {
+                    throw GradleException("CHANGELOG is required")
+                }
+            }
+        } else {
+            ""
+        }
+    }
+}
 
 publishMods {
+    dryRun = System.getenv("DRY_RUN")?.toBoolean() ?: true
+
     version = modVersion
 
     changelog = """
 # Xaero's Maps x Waystones v$modVersion
-${System.getenv("CHANGELOG")}
+$changelogContent
 """.trimIndent()
 
     type = when {

@@ -6,7 +6,6 @@ import dev.alinco8.xaeromaps_waystones.network.WaystoneActivatedPacket
 import dev.alinco8.xaeromaps_waystones.network.WaystoneRemovedPacket
 
 import net.fabricmc.api.ModInitializer
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
 import net.minecraft.server.MinecraftServer
@@ -20,9 +19,6 @@ class FabricEntrypoint : ModInitializer {
         // Events
         ServerLifecycleEvents.SERVER_STARTED.register { server ->
             FabricEntrypoint.server = server
-        }
-        ClientPlayConnectionEvents.DISCONNECT.register { _, _ ->
-            XaerosMapsWaystonesMod.onLeaveWorld()
         }
 
         // Network Packets
