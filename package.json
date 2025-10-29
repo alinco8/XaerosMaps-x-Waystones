@@ -19,7 +19,8 @@
   },
   "release": {
     "branches": [
-      "main"
+      "main",
+      "gh-workflow-test"
     ],
     "plugins": [
       "@semantic-release/commit-analyzer",
