@@ -27,7 +27,7 @@ jobs:
         run: |
           bunx semantic-release --dry-run
           OUTPUT=$(bunx semantic-release --dry-run || echo "")
-          VERSION=$(echo $OUTPUT | grep -oP 'The next release version is \K[0-9]+\.[0-9]+\.[0-9]+' || echo "")
+          VERSION=$(echo $OUTPUT | grep -oiP 'The next release version is \K[0-9]+\.[0-9]+\.[0-9]+' || echo "")
           if [ -z "$VERSION" ]; then
             echo "No new version to release"
             exit 1
