@@ -24,7 +24,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
- - Loader and version: [e.g. `21.1.215`]
+ - Mod Loader and version: [e.g. `NeoForge 21.1.215`]
  - Minecraft: [e.g. `1.21.1`]
  - Xaero's Minimap: [e.g. `21.1.24+neoforge-1.21.1`]
  - Waystones: [e.g. `25.2.10_NeoForge_1.21`]

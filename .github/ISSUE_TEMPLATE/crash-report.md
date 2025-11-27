@@ -26,7 +26,7 @@ Steps to reproduce the crash:
 A clear and concise description of what you expected to happen instead of the crash.
 
 **Environment (please complete the following information):**
- - Loader and version: [e.g. `21.1.215`]
+ - Loader and version: [e.g. `NeoForge 21.1.215`]
  - Minecraft: [e.g. `1.21.1`]
  - Xaero's Minimap: [e.g. `21.1.24+neoforge-1.21.1`]
  - Waystones: [e.g. `25.2.10_NeoForge_1.21`]
