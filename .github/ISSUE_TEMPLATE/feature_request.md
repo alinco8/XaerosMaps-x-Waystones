@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: request a new feature.
+about: Request a new feature.
 title: ''
 labels: 'Status: Todo, Type: Feature'
 assignees: alinco8

@@ -1,6 +1,6 @@
 ---
 name: Improvement request
-about: propose an improvement to existing functionality.
+about: Propose an improvement to existing functionality.
 title: ''
 labels: 'Status: Todo, Type: Improvement'
 assignees: alinco8
