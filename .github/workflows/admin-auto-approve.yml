@@ -9,7 +9,7 @@ on:
 jobs:
   approve:
     if: |
-      github.event.pull_request.user.login == github.repository_owner
+      contains(fromJSON('["alinco8"]'), github.event.pull_request.user.login)
       && ! github.event.pull_request.draft
     runs-on: ubuntu-latest
     permissions:
