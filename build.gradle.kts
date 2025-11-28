@@ -1,11 +1,12 @@
 plugins {
-    id("com.google.devtools.ksp") version "2.2.20-2.0.4"
-    id("dev.isxander.modstitch.base") version "0.7.0-unstable"
+    id("com.google.devtools.ksp") version "2.3.3"
+    id("dev.isxander.modstitch.base") version "0.7.1-unstable"
     id("dev.kikugie.fletching-table") version "0.1.0-alpha.22"
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
+    id("com.github.ben-manes.versions") version "0.53.0"
     `maven-publish`
 
-    kotlin("jvm") version "2.2.20"
+    kotlin("jvm") version "2.3.0-RC"
 }
 
 fun <T> ifPresent(name: String, required: Boolean = false, block: (String) -> T?): T? =
