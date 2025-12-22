@@ -4,6 +4,9 @@
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/iv2jCzkP?logo=modrinth&style=flat)](https://modrinth.com/mod/xaeros-maps-x-waystones)
 [![CurseForge Downloads](https://img.shields.io/curseforge/dt/1340197?logo=curseforge&style=flat)](https://www.curseforge.com/minecraft/mc-mods/xaeros-maps-x-waystones)
 
+> [!WARNING]
+> Currently undergoing major refactoring
+
 ## What is this?
 
 Allows you to view Waystones on Xaero's Minimap/World Map.  
