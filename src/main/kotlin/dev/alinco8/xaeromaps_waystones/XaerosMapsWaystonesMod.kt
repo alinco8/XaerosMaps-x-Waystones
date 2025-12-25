@@ -53,7 +53,7 @@ object XaerosMapsWaystonesMod {
     }
 
     fun onWaystoneActivated(e: WaystoneActivatedEvent) {
-        if (e.waystone.nameString().isEmpty() || e.player.isLocalPlayer) {
+        if (e.waystone.nameString().isEmpty() || e.player.isLocalPlayer || !e.waystone.isValid) {
             return
         }
         LOGGER.debug("Activated waystone: {} at {}", e.waystone.nameString(), e.waystone.pos)
@@ -72,7 +72,7 @@ object XaerosMapsWaystonesMod {
     }
 
     fun onWaystoneUpdateReceived(e: WaystoneUpdateReceivedEvent) {
-        if (e.waystone.nameString().isEmpty()) {
+        if (e.waystone.nameString().isEmpty() || !e.waystone.isValid) {
             return
         }
         LOGGER.debug("Updated waystone: {} at {}", e.waystone.nameString(), e.waystone.pos)
@@ -102,7 +102,7 @@ object XaerosMapsWaystonesMod {
 
     fun onWaystonesListReceived(e: WaystonesListReceivedEvent) {
         for (waystone in e.waystones) {
-            if (waystone.nameString().isEmpty()) {
+            if (waystone.nameString().isEmpty() || !waystone.isValid) {
                 continue
             }
             LOGGER.debug("Loaded waystone: {} at {}", waystone.nameString(), waystone.pos)
