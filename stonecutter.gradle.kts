@@ -27,3 +27,8 @@ stonecutter parameters {
 stonecutter handlers {
     inherit("cfg", "toml")
 }
+
+stonecutter tasks {
+    order("publishModrinth")
+    order("publishCurseforge")
+}

@@ -82,6 +82,8 @@ jobs:
         shell: bash
         env:
           CHANGELOG: ${{ env.RELEASE_NOTES }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
         # language=bash
         run: |
           set -euo pipefail
