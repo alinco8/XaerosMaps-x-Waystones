@@ -1,0 +1,41 @@
+{
+  schemaVersion: 1,
+  id: "${mod.id}",
+  version: "${mod.version}",
+  name: "${mod.name}",
+  description: "${mod.description}",
+  authors: [
+    "${mod.authors}",
+  ],
+  license: "${mod.license}",
+  icon: "icon.png",
+  contact: {
+    homepage: "${mod.homepage_url}",
+    sources: "${mod.sources_url}",
+    issues: "${mod.issues_url}",
+  },
+  environment: "client",
+  entrypoints: {
+    client: [
+      {
+        adapter: "kotlin",
+        value: "${mod.group}.${mod.id}.platform.fabric.FabricEntrypointClient",
+      },
+    ],
+    modmenu: [
+      {
+        adapter: "kotlin",
+        value: "${mod.group}.${mod.id}.platform.fabric.ModMenuIntegration",
+      }
+    ]
+  },
+  depends: {
+    "fabric-api": "${deps.fabric_api}",
+    "fabric-language-kotlin": "${deps.fabric_kotlin}",
+    "waystones": "${deps.waystones}",
+    "balm": "${deps.balm}",
+    "xaerominimap": "${deps.xaeros_minimap}",
+    //? yacl
+    "yet_another_config_lib_v3": "${deps.yacl}",
+  }
+}

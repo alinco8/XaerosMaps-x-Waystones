@@ -1,45 +1,33 @@
+@file:Suppress("UnstableApiUsage")
+
+rootProject.name = "Xaero's Maps x Waystones"
+includeBuild("build-logic")
+
 pluginManagement {
     repositories {
+        maven("https://maven.kikugie.dev/snapshots") // Fletching Table
+        maven("https://maven.kikugie.dev/releases") // Stonecutter
+        maven("https://maven.neoforged.net/releases") // NeoForged
+        maven("https://maven.fabricmc.net/") // Fabric
         gradlePluginPortal()
         mavenCentral()
-
-        // Stonecutter, FletchingTable
-        maven("https://maven.kikugie.dev/snapshots")
-        maven("https://maven.kikugie.dev/releases")
-
-        // Modstitch
-        maven("https://maven.isxander.dev/releases/")
-
-        // Loom
-        maven("https://maven.fabricmc.net/")
-
-        // ModDevGradle
-        maven("https://maven.neoforged.net/releases/")
     }
 }
 
 plugins {
-    id("dev.kikugie.stonecutter") version "0.7+"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    id("dev.kikugie.stonecutter") version "0.8.1"
 }
 
 stonecutter {
-    kotlinController = true
-    centralScript = "build.gradle.kts"
-
     create(rootProject) {
-        // "fabric" (1.14+), "neoforge"(1.20.6+), "vanilla"(any) or "forge"(<=1.20.1)
-        fun mc(mcVersion: String, loaders: List<String>, name: String = mcVersion) =
-            loaders.forEach { version("$name-$it", mcVersion) }
+        fun mc(version: String, vararg loaders: String) = loaders.forEach {
+            version("$version-$it", version).buildscript("build.$it.gradle.kts")
+        }
 
-        mc("1.21.1", listOf("neoforge", "fabric"))
-//        mc("1.20.1", listOf("forge", "fabric"))
-//        mc("1.19.2", listOf("forge", "fabric"))
-//        mc("1.18.2", listOf("forge", "fabric"))
-//        mc("1.16.5", listOf("forge"))
+        mc("1.21.11", "neoforge", "fabric")
+        mc("1.21.1", "neoforge", "fabric")
 
-        // Default target
         vcsVersion = "1.21.1-neoforge"
     }
 }
-
-rootProject.name = "Xaero's Maps x Waystones"
