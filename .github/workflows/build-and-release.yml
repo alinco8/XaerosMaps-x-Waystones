@@ -61,7 +61,7 @@ jobs:
 
           RELEASE_NOTES="$(git cliff --unreleased --strip header)"
           {
-            echo "RELEASE_NOTES<<'EOF'"
+            echo "RELEASE_NOTES<<EOF"
             echo "$RELEASE_NOTES"
             echo "EOF"
           } >> "$GITHUB_ENV"
