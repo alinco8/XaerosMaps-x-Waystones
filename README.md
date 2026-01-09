@@ -4,7 +4,7 @@
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/iv2jCzkP?logo=modrinth&style=flat)](https://modrinth.com/mod/xaeros-maps-x-waystones)
 [![CurseForge Downloads](https://img.shields.io/curseforge/dt/1340197?logo=curseforge&style=flat)](https://www.curseforge.com/minecraft/mc-mods/xaeros-maps-x-waystones)
 
-## What is this mod?
+## 💬 Description
 
 This mod connects Waystones with Xaero’s Minimap / World Map!
 
@@ -16,7 +16,7 @@ More specifically...
 - When you rename a Waystone, the marker name updates automatically as well.
 - Fully configurable!
 
-## Gallery
+## 📷 Gallery
 
 ![InGame](https://github.com/alinco8/XaerosMaps-x-Waystones/blob/main/docs/images/in-game.png)
 ![Config](https://github.com/alinco8/XaerosMaps-x-Waystones/blob/main/docs/images/config.png)
