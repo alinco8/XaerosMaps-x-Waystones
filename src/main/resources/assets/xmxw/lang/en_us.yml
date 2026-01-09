@@ -1,0 +1,15 @@
+yacl3:
+  config:
+    xmxw:
+      title: "XMXW Config"
+      category:
+        general: "General"
+        general.group:
+          waypoint: "Waypoint"
+          waypoint.option:
+            waypointTitle: "Waypoint Title"
+            waypointTitle.description.1: "Set the title displayed on waypoints."
+            waypointNameFormat: "Waypoint Name Format"
+            waypointNameFormat.description.1: "Select the format for waypoint names."
+            waypointColor: "Waypoint Color"
+            waypointColor.description.1: "Choose the color of the waypoint."

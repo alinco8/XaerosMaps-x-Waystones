@@ -1,0 +1,15 @@
+yacl3:
+  config:
+    xmxw:
+      title: "XMXWの設定"
+      category:
+        general: "一般"
+        general.group:
+          waypoint: "ウェイポイント"
+          waypoint.option:
+            waypointTitle: "ウェイポイントのタイトル"
+            waypointTitle.description.1: "ウェイポイントに表示されるタイトルを設定。"
+            waypointNameFormat: "ウェイポイント名の形式"
+            waypointNameFormat.description.1: "ウェイポイント名の形式を選択。"
+            waypointColor: "ウェイポイントの色"
+            waypointColor.description.1: "ウェイポイントの色を選択。"

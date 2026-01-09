@@ -1,0 +1,127 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: build-release-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle (with cache)
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: wrapper
+
+      - name: Set up git-cliff
+        uses: kenji-miyake/setup-git-cliff@v2
+
+      - name: Compute next version + release notes
+        id: cliff
+        shell: bash
+        # language=bash
+        run: |
+          set -euo pipefail
+          
+          CURRENT_VERSION="$(grep -E '^mod\.version=' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')"
+          NEXT_VERSION="$(git cliff --bumped-version | tr -d '[:space:]')"
+
+          echo "CURRENT_VERSION=$CURRENT_VERSION"
+          echo "NEXT_VERSION=$NEXT_VERSION"
+
+          if [[ -z "$NEXT_VERSION" ]]; then
+            echo "git-cliff did not return NEXT_VERSION."
+            exit 1
+          fi
+
+          if [[ "$NEXT_VERSION" == "$CURRENT_VERSION" ]]; then
+            echo "No version bump detected."
+            echo "bumped=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "bumped=true" >> "$GITHUB_OUTPUT"
+
+          RELEASE_NOTES="$(git cliff --unreleased --strip header)"
+          {
+            echo "RELEASE_NOTES<<'EOF'"
+            echo "$RELEASE_NOTES"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+
+          echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_ENV"
+
+          sed -i -E "s/^mod\.version=.*/mod.version=${NEXT_VERSION}/" gradle.properties
+
+      - name: Build (sanity check)
+        if: steps.cliff.outputs.bumped == 'true'
+        shell: bash
+        # language=bash
+        run: |
+          set -euo pipefail
+          ./gradlew build --stacktrace --warning-mode all --build-cache --parallel
+      - name: Publish
+        if: steps.cliff.outputs.bumped == 'true'
+        shell: bash
+        env:
+          CHANGELOG: ${{ env.RELEASE_NOTES }}
+        # language=bash
+        run: |
+          set -euo pipefail
+          DRY_RUN=false ./gradlew publishMods --stacktrace --warning-mode all --build-cache --parallel
+
+      - name: Release
+        if: steps.cliff.outputs.bumped == 'true'
+        shell: bash
+        # language=bash
+        run: |
+          set -euo pipefail
+          
+          git config user.name "deploy-bot"
+          git config user.email "deploy-bot@users.noreply.github.com"
+          
+          git add gradle.properties || true
+          git commit -m "chore(release): v${NEXT_VERSION}" || echo "Nothing to commit"
+          
+          git tag -a "v${NEXT_VERSION}" -m "v${NEXT_VERSION}"
+          
+          git push origin HEAD:${{ github.ref_name }}
+          git push origin "v${NEXT_VERSION}"
+
+      - name: Create GitHub Release
+        if: steps.cliff.outputs.bumped == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.NEXT_VERSION }}
+          name: v${{ env.NEXT_VERSION }}
+          body: ${{ env.RELEASE_NOTES }}
+          draft: false
+          prerelease: false
+
+      - name: Upload build outputs / reports (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            **/build/libs/**
+            **/build/reports/**
+            **/build/test-results/**
+          if-no-files-found: ignore
