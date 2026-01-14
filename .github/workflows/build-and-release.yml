@@ -42,7 +42,7 @@ jobs:
           set -euo pipefail
           
           CURRENT_VERSION="$(grep -E '^mod\.version=' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')"
-          NEXT_VERSION="$(git cliff --bumped-version | tr -d '[:space:]')"
+          NEXT_VERSION="$(git cliff --bumped-version --unreleased | tr -d '[:space:]')"
 
           echo "CURRENT_VERSION=$CURRENT_VERSION"
           echo "NEXT_VERSION=$NEXT_VERSION"
