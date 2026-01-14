@@ -6,21 +6,25 @@ import buildlogic.strictMaven
 import org.slf4j.event.Level
 
 plugins {
-    id("net.neoforged.moddev") version "2.0.134"
+    id("net.neoforged.moddev.legacyforge") version "2.0.134"
     id("project.common")
-    id("dev.kikugie.fletching-table.neoforge")
+    id("dev.kikugie.fletching-table.lexforge")
     id("me.modmuss50.mod-publish-plugin")
 }
 
 val mcVersion: String by extra
 val loaderName: String by extra
 
-val localRuntime: Configuration by configurations.creating
+val modLocalRuntime: Configuration by configurations.creating
 
 configurations {
     runtimeClasspath {
-        extendsFrom(localRuntime)
+        extendsFrom(modLocalRuntime)
     }
+}
+
+obfuscation {
+    createRemappingConfiguration(modLocalRuntime)
 }
 
 repositories {
@@ -31,33 +35,19 @@ repositories {
 }
 
 dependencies {
-    implementation("thedarkcolour:kotlinforforge-neoforge:${prop("deps.kff")}")
+    modImplementation("thedarkcolour:kotlinforforge:${prop("deps.kff")}")
+    modImplementation("xaero.lib:xaerolib-forge-$mcVersion:1.0.45")
 
     ifProp("deps.yacl") {
         // Implementation causes issues in <=1.20.4
-        implementation("dev.isxander:yet-another-config-lib:$it") {
+        modImplementation("dev.isxander:yet-another-config-lib:$it") {
             isTransitive = false
-        }
-    }
-
-    listOf(
-        "sodium",
-        "lithium",
-        "immediatelyfast",
-        "ferrite-core",
-        "modernfix",
-        "badoptimizations",
-    ).forEach {
-        try {
-            localRuntime(fletchingTable.modrinth(it))
-        } catch (_: NoSuchElementException) {
-            println("Mod '$it' not found in modrinth dependencies, skipping...")
         }
     }
 }
 
-neoForge {
-    version = prop("deps.neoforge")
+legacyForge {
+    version = "$mcVersion-${prop("deps.forge")}"
 
     ifProp("deps.parchment") {
         parchment {
@@ -88,11 +78,7 @@ tasks {
         dependsOn("stonecutterGenerate")
     }
     named<ProcessResources>("processResources") {
-        exclude("fabric.mod.json5", "META-INF/mods.toml")
-
-        if (stonecutter.eval(mcVersion, "<=1.20.4")) {
-            rename("""neoforge\.mods\.toml""", "mods.toml")
-        }
+        exclude("fabric.mod.json5", "META-INF/neoforge.mods.toml")
     }
     named<Copy>("buildAndCollect") {
         from(jar.map { it.archiveFile }, sourcesJar.map { it.archiveFile })

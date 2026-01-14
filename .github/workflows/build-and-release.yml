@@ -87,7 +87,7 @@ jobs:
         # language=bash
         run: |
           set -euo pipefail
-          DRY_RUN=false ./gradlew publishMods --stacktrace --warning-mode all --build-cache --parallel
+          DRY_RUN=false ./gradlew buildAndCollect publishMods --stacktrace --warning-mode all --build-cache --parallel
 
       - name: Release
         if: steps.cliff.outputs.bumped == 'true'
@@ -116,6 +116,7 @@ jobs:
           body: ${{ env.RELEASE_NOTES }}
           draft: false
           prerelease: false
+          files: build/libs/*
 
       - name: Upload build outputs / reports (always)
         if: always()

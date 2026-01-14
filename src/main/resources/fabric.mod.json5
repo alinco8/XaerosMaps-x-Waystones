@@ -33,7 +33,7 @@
     "fabric-api": "${deps.fabric_api}",
     "fabric-language-kotlin": "${deps.fabric_kotlin}",
     "waystones": "${deps.waystones}",
-    "balm": "${deps.balm}",
+    "balm-fabric": "${deps.balm}",
     "xaerominimap": "${deps.xaeros_minimap}",
     //? yacl
     "yet_another_config_lib_v3": "${deps.yacl}",
