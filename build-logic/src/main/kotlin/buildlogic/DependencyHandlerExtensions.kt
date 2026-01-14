@@ -20,3 +20,20 @@ fun Project.modImplementation(
         )
     }
 }
+
+fun Project.modCompileOnly(
+    dependencyNotation: Any,
+) {
+    val loaderName: String by project
+
+    dependencies {
+        add(
+            when (loaderName) {
+                "fabric", "forge" -> "modCompileOnly"
+                "neoforge" -> "compileOnly"
+                else -> error("Unknown loader: $loaderName")
+            },
+            dependencyNotation
+        )
+    }
+}

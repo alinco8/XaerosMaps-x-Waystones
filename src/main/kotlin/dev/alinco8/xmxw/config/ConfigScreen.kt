@@ -1,54 +1,98 @@
+//? if yacl {
 package dev.alinco8.xmxw.config
 
 import dev.alinco8.xmxw.XMXWClient
+import dev.alinco8.xmxw.config.yacl.HighlightedStringControllerBuilder
+import dev.alinco8.xmxw.config.yacl.configScreen
+import dev.isxander.yacl3.api.Option
+import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
+import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder
 import dev.isxander.yacl3.api.controller.StringControllerBuilder
-import dev.isxander.yacl3.dsl.YetAnotherConfigLib
+import kotlin.reflect.KMutableProperty0
+import kotlin.reflect.KProperty0
+import net.minecraft.ChatFormatting
 import net.minecraft.client.gui.screens.Screen
+import net.minecraft.network.chat.Style
 import xaero.hud.minimap.waypoint.WaypointColor
 
+private fun <T : Any> Option.Builder<T>.bind(
+    default: KProperty0<T>,
+    current: KMutableProperty0<T>,
+) = binding(default.get(), { current.get() }, { current.set(it) })
+
 object ConfigScreen {
-    fun getConfigScreen(parent: Screen): Screen = YetAnotherConfigLib(XMXWClient.MOD_ID) {
-        val default = XMXWConfig.HANDLER.defaults()
-        val instance = XMXWConfig.HANDLER.instance()
+    fun getConfigScreen(parent: Screen): Screen {
+        val h = XMXWConfig.HANDLER
+        val d = h.defaults()
+        val i = h.instance()
 
-        save {
-            XMXWConfig.HANDLER.save()
-        }
+        return configScreen("xmxw") {
+            builder.title(t("title"))
+            builder.save(h::save)
 
-        categories.register("general") {
-            groups.register("waypoint") {
-                options.register("waypointTitle") {
-                    binding(
-                        default.waypointTitle,
-                        { instance.waypointTitle },
-                        { instance.waypointTitle = it }
-                    )
-                    controller(StringControllerBuilder::create)
-                }
-                options.register("waypointNameFormat") {
-                    binding(
-                        default.waypointNameFormat,
-                        { instance.waypointNameFormat },
-                        { instance.waypointNameFormat = it }
-                    )
-                    controller(StringControllerBuilder::create)
-                }
-                options.register("waypointColor") {
-                    binding(
-                        default.waypointColor,
-                        { instance.waypointColor },
-                        { instance.waypointColor = it }
-                    )
-                    controller { opt ->
-                        EnumControllerBuilder.create(opt)
-                            .enumClass(WaypointColor::class.java)
-                            .formatValue { color ->
-                                color.getName().copy().withColor(color.hex)
-                            }
+            category("general") {
+                builder.name(t("name"))
+
+                group("waypoint") {
+                    name(t("name"))
+
+                    option("title") {
+                        name(t("name"))
+                        builder.description(OptionDescription.of(t("description")))
+                        builder.bind(d::waypointTitle, i::waypointTitle)
+                        builder.controller(StringControllerBuilder::create)
+                    }
+
+                    option("nameFormat") {
+                        name(t("name"))
+                        builder.description(OptionDescription.of(t("description")))
+                        builder.bind(d::waypointNameFormat, i::waypointNameFormat)
+                        builder.controller { opt ->
+                            HighlightedStringControllerBuilder.create(opt)
+                                .highlightMap(
+                                    XMXWClient.replacers.asSequence().associate {
+                                        it.key to ChatFormatting.LIGHT_PURPLE.color!!
+                                    }
+                                )
+                        }
+                    }
+
+                    option("color") {
+                        name(t("name"))
+                        builder.description(OptionDescription.of(t("description")))
+                        builder.bind(d::waypointColor, i::waypointColor)
+                        builder.controller { opt ->
+                            EnumControllerBuilder.create(opt)
+                                .enumClass(WaypointColor::class.java)
+                                .formatValue { color ->
+                                    color.getName().copy()
+                                        .withStyle(Style.EMPTY.withColor(color.hex))
+                                }
+                        }
+                    }
+
+                    option("offsetX") {
+                        name(t("name"))
+                        builder.description(OptionDescription.of(t("description")))
+                        builder.bind(d::waypointOffsetX, i::waypointOffsetX)
+                        builder.controller(IntegerFieldControllerBuilder::create)
+                    }
+                    option("offsetY") {
+                        name(t("name"))
+                        builder.description(OptionDescription.of(t("description")))
+                        builder.bind(d::waypointOffsetY, i::waypointOffsetY)
+                        builder.controller(IntegerFieldControllerBuilder::create)
+                    }
+                    option("offsetZ") {
+                        name(t("name"))
+                        builder.description(OptionDescription.of(t("description")))
+                        builder.bind(d::waypointOffsetZ, i::waypointOffsetZ)
+                        builder.controller(IntegerFieldControllerBuilder::create)
                     }
                 }
             }
-        }
-    }.generateScreen(parent)
+        }.generateScreen(parent)
+    }
 }
+//? }

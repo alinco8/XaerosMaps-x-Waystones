@@ -7,12 +7,12 @@ plugins {
     id("com.github.ben-manes.versions") version "0.53.0"
 }
 
-stonecutter active "1.21.1-neoforge"
+stonecutter active "1.20.1-fabric"
 
 stonecutter parameters {
     constants.match(
         node.metadata.project.substringAfter("-"),
-        "fabric", "neoforge"
+        "fabric", "neoforge", "forge"
     )
     constants["yacl"] = node.project.propOrNull("deps.yacl") != null
 

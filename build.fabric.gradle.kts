@@ -41,6 +41,10 @@ dependencies {
 
     modImplementation("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
 
+    ifProp("deps.yacl") {
+        modImplementation("dev.isxander:yet-another-config-lib:$it")
+    }
+
     listOf(
         "sodium",
         "lithium",
@@ -54,6 +58,26 @@ dependencies {
         } catch (_: NoSuchElementException) {
             // Optional dependency
         }
+    }
+}
+
+loom {
+    runs {
+        configureEach {
+            vmArgs(
+                "-Dsodium.checks.issue2561=false",
+            )
+            property("fabric.log.level", "debug")
+        }
+    }
+}
+
+tasks {
+    named<ProcessResources>("processResources") {
+        exclude("META-INF/neoforge.mods.toml", "META-INF/mods.toml")
+    }
+    named<Copy>("buildAndCollect") {
+        from(remapJar.map { it.archiveFile }, remapSourcesJar.map { it.archiveFile })
     }
 }
 

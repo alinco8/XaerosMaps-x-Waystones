@@ -1,5 +1,5 @@
 //? if fabric {
-/*package dev.alinco8.xmxw.platform.fabric
+package dev.alinco8.xmxw.platform.fabric
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory
 import com.terraformersmc.modmenu.api.ModMenuApi
@@ -10,4 +10,4 @@ class ModMenuIntegration : ModMenuApi {
         ConfigScreen.getConfigScreen(parent)
     }
 }
-*///? }
+//? }

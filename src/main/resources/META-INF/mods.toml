@@ -20,32 +20,23 @@ description='''${mod.description}'''
 #file="META-INF/accesstransformer.cfg"
 
 [[dependencies.${mod.id}]]
-modId="neoforge"
-type="required"
-versionRange="${deps.neoforge}"
-ordering="NONE"
-side="BOTH"
-
-[[dependencies.${mod.id}]]
-modId="minecraft"
-type="required"
-versionRange="${deps.minecraft}"
-ordering="NONE"
-side="BOTH"
+modId="forge"
+versionRange="${deps.forge}"
+mandatory=true
 
 [[dependencies.${mod.id}]]
 modId="waystones"
-type="required"
 versionRange="${deps.waystones}"
+mandatory=true
 
 [[dependencies.${mod.id}]]
 modId="balm"
-type="required"
 versionRange="${deps.balm}"
+mandatory=true
 
 #? if yacl {
 [[dependencies.${mod.id}]]
 modId="yet_another_config_lib_v3"
-type="required"
 versionRange="${deps.yacl}"
+mandatory=true
 #? }

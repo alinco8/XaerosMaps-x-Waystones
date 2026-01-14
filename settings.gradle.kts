@@ -5,11 +5,16 @@ includeBuild("build-logic")
 
 pluginManagement {
     repositories {
-        maven("https://maven.kikugie.dev/snapshots") // Fletching Table
-        maven("https://maven.kikugie.dev/releases") // Stonecutter
         maven("https://maven.neoforged.net/releases") // NeoForged
         maven("https://maven.fabricmc.net/") // Fabric
+        maven("https://maven.kikugie.dev/snapshots") // Fletching Table
+        maven("https://maven.kikugie.dev/releases") // Stonecutter
         gradlePluginPortal()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositories {
         mavenCentral()
     }
 }
@@ -25,8 +30,10 @@ stonecutter {
             version("$version-$it", version).buildscript("build.$it.gradle.kts")
         }
 
-        mc("1.21.11", "neoforge", "fabric")
-        mc("1.21.1", "neoforge", "fabric")
+        mc("1.21.11", "neoforge", "fabric") // 1.21.1
+        mc("1.21.1", "neoforge", "fabric") // 1.21~1.21.10
+        mc("1.20.4", "neoforge") // 1.20.4~1.20.6
+        mc("1.20.1", "forge", "fabric") // 1.20~1.20.6
 
         vcsVersion = "1.21.1-neoforge"
     }

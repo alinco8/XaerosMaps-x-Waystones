@@ -1,5 +1,6 @@
 import buildlogic.getTemplateProps
 import buildlogic.ifProp
+import buildlogic.modCompileOnly
 import buildlogic.modImplementation
 import buildlogic.prop
 import buildlogic.propOrNull
@@ -42,10 +43,6 @@ dependencies {
     modImplementation("maven.modrinth:waystones:${prop("deps.waystones")}")
     modImplementation("maven.modrinth:balm:${prop("deps.balm")}")
     modImplementation("xaero.minimap:xaerominimap-$loaderName-$mcVersion:${prop("deps.xaeros_minimap")}")
-
-    ifProp("deps.yacl") {
-        modImplementation("dev.isxander:yet-another-config-lib:$it")
-    }
 }
 
 sourceSets {
@@ -57,12 +54,12 @@ sourceSets {
 java {
     withSourcesJar()
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(prop("deps.java").toInt())
     }
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(prop("deps.java").toInt())
 }
 
 tasks {
@@ -76,6 +73,7 @@ tasks {
                 "**/*.toml",
                 "**/*.json",
                 "**/*.json5",
+                "**/*.mcmeta",
             )
         ) {
             filteringCharset = "UTF-8"
@@ -84,6 +82,11 @@ tasks {
     }
     named("sourcesJar") {
         dependsOn(named("stonecutterGenerate"))
+    }
+    register<Copy>("buildAndCollect") {
+        dependsOn(named("build"))
+        group = "build"
+        into(rootProject.layout.buildDirectory.file("libs"))
     }
 }
 

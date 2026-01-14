@@ -7,7 +7,9 @@ fun Project.propOrNull(key: String): String? =
             .containsKey(key)
     ) System.getenv(key) else null
 
-fun Project.prop(key: String): String = propOrNull(key) ?: error("Property '$key' not found")
+fun Project.prop(key: String): String =
+    propOrNull(key) ?: error("Property '$key' not found in project '${this.name}'")
+
 fun Project.ifProp(key: String, block: Project.(String) -> Unit) {
     propOrNull(key)?.let { block(it) }
 }

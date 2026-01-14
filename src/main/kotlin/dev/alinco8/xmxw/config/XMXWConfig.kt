@@ -13,12 +13,15 @@ class XMXWConfig {
                 .id(XMXWClient.loc("config"))
                 .serializer { config ->
                     //? if fabric {
-                    /*val configPath =
+                    val configPath =
                         net.fabricmc.loader.api.FabricLoader.getInstance().configDir.resolve("config.json")
-                    *///? } else if neoforge {
-                    val configPath = net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get()
+                    //? } else if neoforge {
+                    /*val configPath = net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get()
                         .resolve("${XMXWClient.MOD_ID}.json")
-                    //? }
+                    *///? } else if forge {
+                    /*val configPath = net.minecraftforge.fml.loading.FMLPaths.CONFIGDIR.get()
+                        .resolve("${XMXWClient.MOD_ID}.json")
+                    *///? }
 
                     GsonConfigSerializerBuilder.create(config)
                         .setPath(configPath)
@@ -29,11 +32,18 @@ class XMXWConfig {
     }
 
     @SerialEntry
-    var waypointTitle: String = "☰"
+    var waypointTitle = "☰"
 
     @SerialEntry
-    var waypointNameFormat: String = "{name} [W]"
+    var waypointNameFormat = "{name} [W]"
 
     @SerialEntry
-    var waypointColor: WaypointColor = WaypointColor.GRAY
+    var waypointColor = WaypointColor.GRAY
+
+    @SerialEntry
+    var waypointOffsetX = 0
+    @SerialEntry
+    var waypointOffsetY = 0
+    @SerialEntry
+    var waypointOffsetZ = 0
 }
