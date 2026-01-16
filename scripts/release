@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Requires: git cliff
+set -euo pipefail
+
+# ==== Checks ====
+if ! git diff --shortstat --exit-code --quiet
+then
+  echo "Working directory is dirty. Please commit or stash changes before releasing."
+  exit 1
+fi
+
+CURRENT_VERSION="$(grep -E '^mod\.version=' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')"
+NEXT_VERSION="$(git cliff --unreleased --bumped-version | tr -d '[:space:]')"
+NEXT_VERSION="${NEXT_VERSION#v}"
+
+if [[ "$CURRENT_VERSION" == "$NEXT_VERSION" ]]; then
+  echo "No new version detected. Exiting."
+  exit 0
+fi
+
+if ! printenv MODRINTH_TOKEN &> /dev/null; then
+  echo "MODRINTH_TOKEN environment variable is not set. Exiting."
+  exit 1
+fi
+if ! printenv CURSEFORGE_TOKEN &> /dev/null; then
+  echo "CURSEFORGE_TOKEN environment variable is not set. Exiting."
+  exit 1
+fi
+
+# ==== Release ====
+echo "Releasing... $CURRENT_VERSION -> $NEXT_VERSION"
+
+RELEASE_NOTES="$(git cliff --unreleased --strip all)"
+
+echo "Release notes:"
+echo "$RELEASE_NOTES"
+
+sed -i '' -E "s/^mod\.version=.*/mod.version=$NEXT_VERSION/" gradle.properties
+echo "Updated gradle.properties with new version."
+
+DRY_RUN=false ./gradlew buildAndCollect publishMods --warning-mode all
+gh release create "v$NEXT_VERSION" -n "$RELEASE_NOTES" build/libs/*
+
+echo "Do not forget to commit the version bump!"
