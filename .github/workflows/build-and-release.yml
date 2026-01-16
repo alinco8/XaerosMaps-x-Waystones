@@ -72,7 +72,7 @@ jobs:
         # language=bash
         run: |
           set -euo pipefail
-          ./gradlew build --stacktrace --warning-mode all --build-cache
+          ./gradlew build --stacktrace --warning-mode all --build-cache --parallel
       - name: Publish
         if: steps.cliff.outputs.bumped == 'true'
         shell: bash
@@ -83,7 +83,7 @@ jobs:
         # language=bash
         run: |
           set -euo pipefail
-          DRY_RUN=false ./gradlew buildAndCollect publishMods --stacktrace --warning-mode all --build-cache
+          DRY_RUN=false ./gradlew buildAndCollect publishMods --stacktrace --warning-mode all --build-cache --parallel
 
       - name: Release
         if: steps.cliff.outputs.bumped == 'true'
