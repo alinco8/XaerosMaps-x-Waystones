@@ -3,25 +3,26 @@
 
 import dev.alinco8.xmxw.UpdateChecker
 import dev.alinco8.xmxw.XMXWClient
-import dev.alinco8.xmxw.XMXWClient.LOGGER
 import dev.alinco8.xmxw.config.ConfigScreen
 import dev.alinco8.xmxw.loc
+import net.minecraft.client.Minecraft
+import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.network.chat.Component
-import net.minecraft.world.entity.player.Player
 import net.minecraftforge.client.ConfigScreenHandler
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.event.TickEvent
 import net.minecraftforge.event.entity.player.PlayerEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.ModContainer
 import net.minecraftforge.fml.ModLoadingContext
-import net.minecraftforge.fml.VersionChecker
 import net.minecraftforge.fml.loading.FMLEnvironment
 
 @Mod(XMXWClient.MOD_ID)
 class ForgeEntrypointClient {
     @Suppress("Removal", "Deprecation")
     val modContainer: ModContainer = ModLoadingContext.get().container
+    private var lastWorld: ClientLevel? = null
 
     init {
         if (FMLEnvironment.dist.isClient) {
@@ -40,9 +41,16 @@ class ForgeEntrypointClient {
     }
 
     @SubscribeEvent
-    fun onDimensionChange(event: PlayerEvent.PlayerChangedDimensionEvent) {
+    fun onClientTick(event: TickEvent.ClientTickEvent) {
+        if (event.phase != TickEvent.Phase.END) return
+
+        val minecraft = Minecraft.getInstance()
+        val level = minecraft.level ?: return
+        if (level == lastWorld) return
+        lastWorld = level
+
         XMXWClient.onDimensionChange(
-            event.to.loc()
+            level.dimension().loc()
         )
     }
     @SubscribeEvent
