@@ -1,11 +1,13 @@
 [changelog]
+#language=twig
 body = """
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits %}
+        {%- set closes = commit.footers | filter(attribute="token", value="Closes") -%}
         - {% if commit.scope and commit.scope != "release" %}*({{ commit.scope }})* {% endif %}\
             {% if commit.breaking %}[**breaking**] {% endif %}\
-            {{ commit.message | upper_first }}\
+            {{ commit.message | upper_first }} {%- if closes | length > 0 %} ({{ closes | map(attribute="value") | join(sep=", ") }}){%- endif -%}\
     {% endfor %}
 {% endfor %}
 """
