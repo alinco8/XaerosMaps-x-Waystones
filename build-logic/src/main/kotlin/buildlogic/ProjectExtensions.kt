@@ -14,7 +14,10 @@ fun Project.ifProp(key: String, block: Project.(String) -> Unit) {
     propOrNull(key)?.let { block(it) }
 }
 
-fun Project.getTemplateProps(loaderName: String): Map<String, Map<String, String>> {
+fun Project.getTemplateProps(
+    mcVersion: String,
+    loaderName: String
+): Map<String, Map<String, String>> {
     val deps = properties.filter { (k, v) ->
         k.startsWith("deps.") && k.endsWith(".range") && v is String
     }.map { (key, value) ->
@@ -30,6 +33,10 @@ fun Project.getTemplateProps(loaderName: String): Map<String, Map<String, String
     }.toMap()
 
     return mapOf(
+        "env" to mapOf(
+            "loader" to loaderName,
+            "minecraft" to mcVersion,
+        ),
         "mod" to mapOf(
             "id" to prop("mod.id"),
             "version" to prop("mod.version"),
@@ -42,6 +49,7 @@ fun Project.getTemplateProps(loaderName: String): Map<String, Map<String, String
             "homepage_url" to prop("mod.homepage_url"),
             "issues_url" to prop("mod.issues_url"),
             "forge_updates_url" to prop("mod.forge_updates_url"),
+            "neoforge_updates_url" to prop("mod.neoforge_updates_url"),
         ),
         "deps" to deps
     )

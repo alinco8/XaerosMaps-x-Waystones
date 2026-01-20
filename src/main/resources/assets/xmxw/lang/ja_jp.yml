@@ -1,4 +1,11 @@
 xmxw:
+  messages:
+    mod_update:
+      available:
+        - text: "[XMXW]"
+          color: "green"
+        - text: " 新バージョン %s が利用可能です! 現在のバージョンは %s です"
+          color: "white"
   config:
     title: "XMXWの設定"
     categories:

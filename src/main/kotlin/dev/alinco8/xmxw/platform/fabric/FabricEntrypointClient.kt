@@ -1,12 +1,15 @@
 //? if fabric {
 package dev.alinco8.xmxw.platform.fabric
 
+import dev.alinco8.xmxw.UpdateChecker
 import dev.alinco8.xmxw.XMXWClient
 import dev.alinco8.xmxw.loc
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.network.chat.Component
 
 class FabricEntrypointClient : ClientModInitializer {
     private var lastWorld: ClientLevel? = null
@@ -14,10 +17,26 @@ class FabricEntrypointClient : ClientModInitializer {
     override fun onInitializeClient() {
         XMXWClient.initialize()
 
+        val modContainer = FabricLoader.getInstance()
+            .getModContainer(XMXWClient.MOD_ID).orElseThrow()
+        
         ClientPlayConnectionEvents.JOIN.register { _, _, minecraft ->
             XMXWClient.onDimensionChange(
                 minecraft.level?.dimension()?.loc() ?: return@register
             )
+
+            val currentVersion = modContainer.metadata.version.friendlyString
+            UpdateChecker.checkUpdate(currentVersion)?.let {
+                minecraft.player?.displayClientMessage(
+                    Component.translatable(
+                        "xmxw.messages.mod_update.available",
+                        it,
+                        currentVersion,
+                    ),
+                    false
+                )
+
+            }
         }
         ClientTickEvents.END_CLIENT_TICK.register { client ->
             val level = client.level ?: return@register

@@ -1,13 +1,14 @@
 //? if neoforge {
 /*package dev.alinco8.xmxw.platform.neoforge
 
+import dev.alinco8.xmxw.UpdateChecker
 import dev.alinco8.xmxw.XMXWClient
 import dev.alinco8.xmxw.config.ConfigScreen
 import dev.alinco8.xmxw.loc
+import net.minecraft.network.chat.Component
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
-import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 
@@ -25,9 +26,9 @@ import net.neoforged.neoforge.client.ConfigScreenHandler as IConfigScreenFactory
 *///? } else {
 @Mod(XMXWClient.MOD_ID)
 //? }
-class NeoForgeEntrypointClient(modContainer: ModContainer) {
+class NeoForgeEntrypointClient(val modContainer: ModContainer) {
     init {
-        if (/*?>=1.21.1{*/ /*true *//*?}else{*/FMLEnvironment.dist.isClient/*?}*/) {
+        if (/*?>=1.21.1{*/ /*true *//*?}else{*/net.neoforged.fml.loading.FMLEnvironment.dist.isClient/*?}*/) {
             XMXWClient.initialize()
 
             NeoForge.EVENT_BUS.register(this)
@@ -61,6 +62,18 @@ class NeoForgeEntrypointClient(modContainer: ModContainer) {
         XMXWClient.onDimensionChange(
             event.entity.level().dimension().loc()
         )
+
+        val currentVersion = modContainer.modInfo.version.toString()
+        UpdateChecker.checkUpdate(currentVersion)?.let {
+            event.entity.displayClientMessage(
+                Component.translatable(
+                    "xmxw.messages.mod_update.available",
+                    it,
+                    currentVersion,
+                ),
+                false
+            )
+        }
     }
 }
 *///? }

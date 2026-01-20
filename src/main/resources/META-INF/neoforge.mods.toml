@@ -5,9 +5,9 @@ issueTrackerURL="${mod.issues_url}"
 
 [[mods]]
 modId="${mod.id}"
-version="${mod.version}"
+version="${mod.version}+${env.minecraft}-${env.loader}"
 displayName="${mod.name}"
-updateJSONURL="${mod.forge_updates_url}"
+updateJSONURL="${mod.neoforge_updates_url}"
 displayURL="${mod.homepage_url}"
 logoFile="icon.png"
 authors="${mod.authors}"

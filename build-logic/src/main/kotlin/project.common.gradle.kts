@@ -66,7 +66,7 @@ tasks {
     named<ProcessResources>("processResources") {
         dependsOn("stonecutterGenerate")
 
-        val templateProps = getTemplateProps(loaderName)
+        val templateProps = getTemplateProps(mcVersion, loaderName)
 
         filesMatching(
             listOf(
