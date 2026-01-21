@@ -6,9 +6,9 @@ import buildlogic.strictMaven
 
 plugins {
     id("fabric-loom") version "1.14-SNAPSHOT"
-    id("project.common")
     id("dev.kikugie.fletching-table.fabric")
     id("me.modmuss50.mod-publish-plugin")
+    id("project.common")
 }
 
 val mcVersion: String by extra
@@ -40,10 +40,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${prop("deps.fabric_kotlin")}")
 
     modImplementation("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
-
-    ifProp("deps.yacl") {
-        modImplementation("dev.isxander:yet-another-config-lib:$it")
-    }
+    modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}")
 
     listOf(
         "sodium",

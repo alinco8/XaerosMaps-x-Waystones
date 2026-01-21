@@ -72,19 +72,13 @@ internal class CategoryScope(
         GroupScope(i18n, categoryId, groupId, grpBuilder).apply(block)
         builder.group(grpBuilder.build())
     }
-
-    fun <T> option(optionName: String, block: OptionScope<T>.() -> Unit) {
-        val optBuilder = Option.createBuilder<T>()
-        OptionScope(i18n, categoryId, null, optionName, optBuilder).apply(block)
-        builder.option(optBuilder.build())
-    }
 }
 
 @YaclDsl
 internal class GroupScope(
-    private val i18n: I18n,
-    private val categoryId: String,
-    private val groupId: String,
+    val i18n: I18n,
+    val categoryId: String,
+    val groupId: String,
     val builder: OptionGroup.Builder,
 ) {
     fun t(path: String) = i18n.group(categoryId, groupId, path)
@@ -102,10 +96,10 @@ internal class GroupScope(
 
 @YaclDsl
 internal class OptionScope<T>(
-    private val i18n: I18n,
-    private val categoryId: String,
-    private val groupId: String?,
-    private val optionName: String,
+    val i18n: I18n,
+    val categoryId: String,
+    val groupId: String?,
+    val optionName: String,
     val builder: Option.Builder<T>,
 ) {
     fun t(path: String) = i18n.option(categoryId, groupId, optionName, path)

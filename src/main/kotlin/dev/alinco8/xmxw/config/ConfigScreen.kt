@@ -1,4 +1,3 @@
-//? if yacl {
 package dev.alinco8.xmxw.config
 
 import dev.alinco8.xmxw.XMXWClient
@@ -95,4 +94,3 @@ object ConfigScreen {
         }.generateScreen(parent)
     }
 }
-//? }

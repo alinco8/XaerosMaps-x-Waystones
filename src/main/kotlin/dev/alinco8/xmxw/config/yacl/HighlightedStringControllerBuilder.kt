@@ -3,7 +3,6 @@ package dev.alinco8.xmxw.config.yacl
 import dev.isxander.yacl3.api.Controller
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.controller.ControllerBuilder
-import dev.isxander.yacl3.gui.controllers.string.IStringController
 
 class HighlightedStringControllerBuilder(
     val opt: Option<String>,
@@ -21,6 +20,7 @@ class HighlightedStringControllerBuilder(
         return this
     }
 
+    @Suppress("UnstableApiUsage")
     override fun build(): Controller<String> {
         if (highlightMap.isNullOrEmpty()) error("Highlight map must be provided")
 

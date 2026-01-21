@@ -7,9 +7,9 @@ import org.slf4j.event.Level
 
 plugins {
     id("net.neoforged.moddev") version "2.0.134"
-    id("project.common")
     id("dev.kikugie.fletching-table.neoforge")
     id("me.modmuss50.mod-publish-plugin")
+    id("project.common")
 }
 
 val mcVersion: String by extra
@@ -33,11 +33,9 @@ repositories {
 dependencies {
     implementation("thedarkcolour:kotlinforforge-neoforge:${prop("deps.kff")}")
 
-    ifProp("deps.yacl") {
-        // Implementation causes issues in <=1.20.4
-        implementation("dev.isxander:yet-another-config-lib:$it") {
-            isTransitive = false
-        }
+    // Implementation causes issues in <=1.20.4
+    implementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}") {
+//        isTransitive = false
     }
 
     listOf(

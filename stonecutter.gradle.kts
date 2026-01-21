@@ -1,10 +1,9 @@
 import buildlogic.prop
-import buildlogic.propOrNull
 
 plugins {
     id("dev.kikugie.stonecutter")
-    id("project.base")
     id("com.github.ben-manes.versions") version "0.53.0"
+    id("project.base")
 }
 
 stonecutter active "1.20.1-fabric"
@@ -14,7 +13,6 @@ stonecutter parameters {
         node.metadata.project.substringAfter("-"),
         "fabric", "neoforge", "forge"
     )
-    constants["yacl"] = node.project.propOrNull("deps.yacl") != null
 
     dependencies["xaeros-minimap"] =
         node.project.prop("deps.xaeros_minimap")
@@ -32,3 +30,4 @@ stonecutter tasks {
     order("publishModrinth")
     order("publishCurseforge")
 }
+

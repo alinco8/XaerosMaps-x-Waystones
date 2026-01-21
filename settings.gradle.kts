@@ -13,11 +13,6 @@ pluginManagement {
         mavenCentral()
     }
 }
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-}
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
@@ -30,10 +25,10 @@ stonecutter {
             version("$version-$it", version).buildscript("build.$it.gradle.kts")
         }
 
-        mc("1.21.11", "neoforge", "fabric") // 1.21.1
+        mc("1.20.1", "forge", "fabric") // 1.20..1.20.6
+        mc("1.20.4", "neoforge") // 1.20.4..1.20.6
         mc("1.21.1", "neoforge", "fabric") // 1.21~1.21.10
-        mc("1.20.4", "neoforge") // 1.20.4~1.20.6
-        mc("1.20.1", "forge", "fabric") // 1.20~1.20.6
+        mc("1.21.11", "neoforge", "fabric") // 1.21.1
 
         vcsVersion = "1.21.1-neoforge"
     }

@@ -1,6 +1,5 @@
 import buildlogic.getTemplateProps
 import buildlogic.ifProp
-import buildlogic.modCompileOnly
 import buildlogic.modImplementation
 import buildlogic.prop
 import buildlogic.propOrNull
@@ -14,6 +13,7 @@ plugins {
 
 repositories {
     strictMaven("https://maven.isxander.dev/releases", "dev.isxander") // YACL
+    strictMaven("https://maven.quiltmc.org/repository/release", "org.quiltmc") // QuiltMC
     strictMaven("https://api.modrinth.com/maven", "maven.modrinth") // Modrinth
     strictMaven("https://maven.parchmentmc.org/", "org.parchmentmc") // Parchment
     strictMaven("https://chocolateminecraft.com/maven", "xaero") // Xaero Lib
@@ -105,11 +105,8 @@ publishMods {
     var slugs = mutableListOf(
         "waystones",
         "xaeros-minimap",
+        "yacl"
     )
-
-    ifProp("deps.yacl") {
-        slugs.add("yacl")
-    }
 
     ifProp("MODRINTH_TOKEN") {
         modrinth {

@@ -34,9 +34,7 @@ modId="balm"
 versionRange="${deps.balm}"
 mandatory=true
 
-#? if yacl {
 [[dependencies.${mod.id}]]
 modId="yet_another_config_lib_v3"
 versionRange="${deps.yacl}"
 mandatory=true
-#? }
