@@ -36,11 +36,7 @@ repositories {
 
 dependencies {
     modImplementation("thedarkcolour:kotlinforforge:${prop("deps.kff")}")
-
-    // Implementation causes issues in <=1.20.4
-    modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}") {
-//        isTransitive = false
-    }
+    modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}")
 }
 
 legacyForge {

@@ -33,9 +33,8 @@ repositories {
 dependencies {
     implementation("thedarkcolour:kotlinforforge-neoforge:${prop("deps.kff")}")
 
-    // Implementation causes issues in <=1.20.4
     implementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}") {
-//        isTransitive = false
+        exclude(group = "thedarkcolour", module = "kotlinforforge-neoforge")
     }
 
     listOf(
