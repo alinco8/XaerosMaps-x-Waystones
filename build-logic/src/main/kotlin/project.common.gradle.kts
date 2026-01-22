@@ -42,7 +42,11 @@ dependencies {
 
     modImplementation("maven.modrinth:waystones:${prop("deps.waystones")}")
     modImplementation("maven.modrinth:balm:${prop("deps.balm")}")
-    modImplementation("xaero.minimap:xaerominimap-$loaderName-$mcVersion:${prop("deps.xaeros_minimap")}")
+
+    val parts = prop("deps.xaeros_minimap").split('-').reversed()
+    val xaeroMc = parts.getOrNull(1)
+    val xaeroVersion = parts[0]
+    modImplementation("xaero.minimap:xaerominimap-$loaderName-${xaeroMc ?: mcVersion}:$xaeroVersion")
 }
 
 sourceSets {
