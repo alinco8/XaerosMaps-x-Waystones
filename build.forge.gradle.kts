@@ -55,6 +55,8 @@ legacyForge {
 
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
+            programArgument("--mixin.config=xmxw.mixins.json")
+
             logLevel = Level.DEBUG
         }
     }
@@ -75,6 +77,13 @@ tasks {
     }
     named<Copy>("buildAndCollect") {
         from(jar.map { it.archiveFile }, sourcesJar.map { it.archiveFile })
+    }
+    named<Jar>("jar") {
+        manifest {
+            attributes(
+                "MixinConfigs" to "${prop("mod.id")}.mixins.json"
+            )
+        }
     }
 }
 

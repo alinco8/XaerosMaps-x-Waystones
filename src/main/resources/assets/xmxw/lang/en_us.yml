@@ -1,11 +1,7 @@
 xmxw:
   messages:
-    mod_update:
-      available:
-        - text: "[XMXW]"
-          color: "green"
-        - text: " New version %s is available! You are using version %s"
-          color: "white"
+    mod_update_available: "New version %s is available! You are using version %s"
+    custom_waypoint_uneditable: "Waypoints created by mods cannot be edited!"
   config:
     title: "XMXW Config"
     categories:

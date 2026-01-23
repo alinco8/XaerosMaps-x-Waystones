@@ -1,11 +1,7 @@
 xmxw:
   messages:
-    mod_update:
-      available:
-        - text: "[XMXW]"
-          color: "green"
-        - text: " 新バージョン %s が利用可能です! 現在のバージョンは %s です"
-          color: "white"
+    mod_update_available: "新バージョン %s が利用可能です! 現在のバージョンは %s です"
+    custom_waypoint_uneditable: "Modによって作成されたウェイポイントは編集できません！"
   config:
     title: "XMXWの設定"
     categories:

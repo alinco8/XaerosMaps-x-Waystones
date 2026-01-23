@@ -61,13 +61,12 @@ class ForgeEntrypointClient {
 
         val currentVersion = modContainer.modInfo.version.toString()
         UpdateChecker.checkUpdate(currentVersion)?.let {
-            event.entity.displayClientMessage(
+            XMXWClient.displayMessage(
                 Component.translatable(
-                    "xmxw.messages.mod_update.available",
+                    "xmxw.messages.mod_update_available",
                     it,
                     currentVersion,
-                ),
-                false
+                )
             )
         }
     }

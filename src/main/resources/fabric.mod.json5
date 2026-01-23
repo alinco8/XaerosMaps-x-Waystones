@@ -14,6 +14,9 @@
     sources: "${mod.sources_url}",
     issues: "${mod.issues_url}",
   },
+  mixins: [
+    "${mod.id}.mixins.json",
+  ],
   environment: "client",
   entrypoints: {
     client: [

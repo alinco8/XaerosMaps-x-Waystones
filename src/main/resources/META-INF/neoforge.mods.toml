@@ -13,8 +13,8 @@ logoFile="icon.png"
 authors="${mod.authors}"
 description='''${mod.description}'''
 
-#[[mixins]]
-#config="${mod.id}.mixins.json"
+[[mixins]]
+config="${mod.id}.mixins.json"
 
 #[[accessTransformers]]
 #file="META-INF/accesstransformer.cfg"

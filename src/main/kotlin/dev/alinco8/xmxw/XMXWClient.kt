@@ -23,6 +23,7 @@ import dev.alinco8.xmxw.config.XMXWConfig
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
 import java.util.UUID
 import net.minecraft.client.Minecraft
+import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import xaero.common.minimap.waypoints.Waypoint
 import xaero.hud.minimap.BuiltInHudModules
@@ -31,17 +32,25 @@ import org.slf4j.LoggerFactory
 
 object XMXWClient {
     const val MOD_ID = "xmxw"
+    @JvmField
     val LOGGER: Logger = LoggerFactory.getLogger(MOD_ID)
+
     val replacers = mapOf<String, (WaystoneData) -> String>(
         "name" to { it.name },
     )
 
+    @JvmStatic
     fun loc(path: String): ResourceLocation {
         //? if >=1.21 {
         /*return ResourceLocation.fromNamespaceAndPath(MOD_ID, path)
         *///? } else {
         return ResourceLocation(MOD_ID, path)
         //? }
+    }
+
+    @JvmStatic
+    fun displayMessage(component: Component) {
+        Minecraft.getInstance().player?.displayClientMessage(component, false)
     }
 
     fun initialize() {

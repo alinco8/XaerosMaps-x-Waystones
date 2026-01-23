@@ -43,10 +43,20 @@ dependencies {
     modImplementation("maven.modrinth:waystones:${prop("deps.waystones")}")
     modImplementation("maven.modrinth:balm:${prop("deps.balm")}")
 
-    val parts = prop("deps.xaeros_minimap").split('-').reversed()
-    val xaeroMc = parts.getOrNull(1)
-    val xaeroVersion = parts[0]
-    modImplementation("xaero.minimap:xaerominimap-$loaderName-${xaeroMc ?: mcVersion}:$xaeroVersion")
+    val minimapParts = prop("deps.xaeros_minimap").split('-').reversed()
+    val minimapMc = minimapParts.getOrNull(1)
+    val minimapVersion = minimapParts[0]
+    modImplementation("xaero.minimap:xaerominimap-$loaderName-${minimapMc ?: mcVersion}:$minimapVersion")
+
+    val worldMapParts = prop("deps.xaeros_world_map").split('-').reversed()
+    val worldMapMc = worldMapParts.getOrNull(1)
+    val worldMapVersion = worldMapParts[0]
+    modImplementation("xaero.map:xaeroworldmap-$loaderName-${worldMapMc ?: mcVersion}:$worldMapVersion")
+
+    val libParts = prop("deps.xaeros_lib").split('-').reversed()
+    val libMc = libParts.getOrNull(1)
+    val libVersion = libParts[0]
+    modImplementation("xaero.lib:xaerolib-$loaderName-${libMc ?: mcVersion}:$libVersion")
 }
 
 sourceSets {

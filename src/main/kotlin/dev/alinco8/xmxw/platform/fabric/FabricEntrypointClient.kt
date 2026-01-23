@@ -27,13 +27,12 @@ class FabricEntrypointClient : ClientModInitializer {
 
             val currentVersion = modContainer.metadata.version.friendlyString
             UpdateChecker.checkUpdate(currentVersion)?.let {
-                minecraft.player?.displayClientMessage(
+                XMXWClient.displayMessage(
                     Component.translatable(
-                        "xmxw.messages.mod_update.available",
+                        "xmxw.messages.mod_update_available",
                         it,
                         currentVersion,
-                    ),
-                    false
+                    )
                 )
 
             }

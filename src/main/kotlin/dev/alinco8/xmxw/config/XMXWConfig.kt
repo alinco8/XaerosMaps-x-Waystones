@@ -8,6 +8,7 @@ import xaero.hud.minimap.waypoint.WaypointColor
 
 class XMXWConfig {
     companion object {
+        @JvmStatic
         val HANDLER: ConfigClassHandler<XMXWConfig> =
             ConfigClassHandler.createBuilder(XMXWConfig::class.java)
                 .id(XMXWClient.loc("config"))
