@@ -16,11 +16,11 @@ import xaero.map.config.primary.option.WorldMapPrimaryClientConfigOptions;
 import xaero.map.mods.SupportXaeroMinimap;
 import xaero.map.mods.gui.Waypoint;
 
-//? if >=1.21.11 {
+//? if >=1.21.6 {
 /*import xaero.hud.minimap.waypoint.set.WaypointSet;
-*///? } else {
+ *///? } else {
 import xaero.common.minimap.waypoints.WaypointSet;
- //? }
+    //? }
 
 @Mixin(SupportXaeroMinimap.class)
 abstract
