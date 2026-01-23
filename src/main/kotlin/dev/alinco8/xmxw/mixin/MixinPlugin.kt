@@ -5,10 +5,6 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo
 
 class MixinPlugin : IMixinConfigPlugin {
-    init {
-        println("MixinPlugin initialized")
-    }
-
     override fun onLoad(mixinPackage: String) {}
     override fun getRefMapperConfig(): String? = null
 
@@ -16,8 +12,6 @@ class MixinPlugin : IMixinConfigPlugin {
         val paths = mixinClassName.split(".").dropWhile { it != "mixin" }.drop(1)
         if (paths.firstOrNull() != "compat") return true
         val modId = paths.drop(1).firstOrNull() ?: return true
-
-        println("LISTEEEEN ${LoadingModList.get().mods.any { it.modId == modId }}")
 
         //? if fabric {
         return net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded(modId)
