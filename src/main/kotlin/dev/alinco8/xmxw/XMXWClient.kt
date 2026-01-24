@@ -22,6 +22,7 @@ import net.blay09.mods.balm.api.Balm
 import dev.alinco8.xmxw.config.XMXWConfig
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
 import java.util.UUID
+import net.minecraft.ChatFormatting
 import net.minecraft.client.Minecraft
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
@@ -49,8 +50,14 @@ object XMXWClient {
     }
 
     @JvmStatic
-    fun displayMessage(component: Component) {
-        Minecraft.getInstance().player?.displayClientMessage(component, false)
+    fun displayMessage(vararg component: Component) {
+        val message = Component.empty()
+            .append(Component.literal("[XMXW] ").withStyle(ChatFormatting.GREEN))
+        for (part in component) {
+            message.append(part)
+        }
+
+        Minecraft.getInstance().player?.displayClientMessage(message, false)
     }
 
     fun initialize() {
