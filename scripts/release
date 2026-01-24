@@ -12,8 +12,14 @@ info() {
 
 need() {
   for cmd in "$@"; do
-    command -v "$cmd" >/dev/null 2>&1 || fatal "Missing dependency: $1"
+    command -v "$cmd" >/dev/null 2>&1 || fatal "Missing dependency: $cmd"
   done
+}
+
+if_prod() {
+  if [[ "${DRY_RUN:-}" == "false" ]]; then
+    "$@"
+  fi
 }
 
 need git git-cliff gum gh sed grep cut tr mktemp
@@ -79,15 +85,21 @@ git commit -m "chore(release): v$NEXT_VERSION"
 git tag "v$NEXT_VERSION"
 
 info "Building & publishing..."
-./gradlew clean buildAndCollect publishMods --warning-mode all
+rm -f build/libs/* || true
+CHANGELOG=$RELEASE_NOTES ./gradlew buildAndCollect publishMods --warning-mode all
 
 tmp_notes="$(mktemp)"
 printf '%s\n' "$RELEASE_NOTES" > "$tmp_notes"
 
-gh release create "v$NEXT_VERSION" -F "$tmp_notes" build/libs/*
+info "Pushing the following commits and tag to origin:"
+COMMITS="$(git rev-list --no-merges --pretty=oneline "v$CURRENT_VERSION..HEAD" | grep -v "^commit ")"
+info "$COMMITS"
+
+gum confirm "Push release to origin?" || fatal "Release aborted by user."
+
+if_prod git push origin "$BRANCH" "v$NEXT_VERSION"
+if_prod gh release create "v$NEXT_VERSION" -F "$tmp_notes" build/libs/*
 
 rm -f "$tmp_notes"
 
-info "Done."
-info "Next steps"
-info "  git push --follow-tags"
+info "Done!"
