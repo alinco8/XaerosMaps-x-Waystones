@@ -1,44 +1,93 @@
 #!/usr/bin/env bash
-# Requires: git cliff
+# Requires: git, git-cliff, gum, gh, gradle
 set -euo pipefail
 
-# ==== Checks ====
-if ! git diff --shortstat --exit-code --quiet
-then
-  echo "Working directory is dirty. Please commit or stash changes before releasing."
+fatal() {
+  gum log -l fatal "$1"
   exit 1
+}
+info() {
+  gum log -l info "$1"
+}
+
+need() {
+  for cmd in "$@"; do
+    command -v "$cmd" >/dev/null 2>&1 || fatal "Missing dependency: $1"
+  done
+}
+
+need git git-cliff gum gh sed grep cut tr mktemp
+
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || fatal "Not a git repository."
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  git status --porcelain | sed 's/^/  /' >&2 || true
+  fatal "Working directory is dirty. Please commit or stash changes before releasing."
+fi
+
+BRANCH="$(git branch --show-current)"
+[[ -n "$BRANCH" ]] || fatal "Detached HEAD. Please checkout a branch before releasing."
+
+git rev-parse --abbrev-ref --symbolic-full-name "@{u}" >/dev/null 2>&1 \
+  || fatal "No upstream set for '$BRANCH'. Set upstream before releasing."
+
+git fetch --tags >/dev/null 2>&1 || fatal "Failed to fetch tags."
+
+if [[ "$(git rev-list --count "@{u}..HEAD")" != "0" ]]; then
+  fatal "You have unpushed commits. Push before releasing."
+fi
+if [[ "$(git rev-list --count "HEAD..@{u}")" != "0" ]]; then
+  fatal "Remote has new commits. Pull/rebase before releasing."
 fi
 
 CURRENT_VERSION="$(grep -E '^mod\.version=' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')"
-NEXT_VERSION="$(git cliff --unreleased --bumped-version | tr -d '[:space:]')"
+[[ -n "$CURRENT_VERSION" ]] || fatal "Could not read current version from gradle.properties."
+
+NEXT_VERSION="$(git-cliff --unreleased --bumped-version | tr -d '[:space:]')"
 NEXT_VERSION="${NEXT_VERSION#v}"
+[[ -n "$NEXT_VERSION" ]] || fatal "git-cliff did not produce a bumped version."
 
 if [[ "$CURRENT_VERSION" == "$NEXT_VERSION" ]]; then
-  echo "No new version detected. Exiting."
-  exit 0
+  fatal "No new version detected. Current version is already $CURRENT_VERSION."
 fi
 
-if ! printenv MODRINTH_TOKEN &> /dev/null; then
-  echo "MODRINTH_TOKEN environment variable is not set. Exiting."
-  exit 1
-fi
-if ! printenv CURSEFORGE_TOKEN &> /dev/null; then
-  echo "CURSEFORGE_TOKEN environment variable is not set. Exiting."
-  exit 1
-fi
+git rev-parse "v$NEXT_VERSION" >/dev/null 2>&1 && fatal "Tag v$NEXT_VERSION already exists."
 
-# ==== Release ====
-echo "Releasing... $CURRENT_VERSION -> $NEXT_VERSION"
+[[ -n "${MODRINTH_TOKEN:-}" ]] || fatal "MODRINTH_TOKEN environment variable is not set (or empty)."
+[[ -n "${CURSEFORGE_TOKEN:-}" ]] || fatal "CURSEFORGE_TOKEN environment variable is not set (or empty)."
 
-RELEASE_NOTES="$(git cliff --unreleased --strip all)"
+RELEASE_NOTES="$(git-cliff --unreleased --strip all)"
+[[ -n "$RELEASE_NOTES" ]] || fatal "Release notes are empty."
 
-echo "Release notes:"
-echo "$RELEASE_NOTES"
+info "Releasing... $CURRENT_VERSION -> $NEXT_VERSION"
+info "Release notes:"
+info "$RELEASE_NOTES"
+
+cleanup() {
+  if [[ -n "$(git status --porcelain)" ]]; then
+    git restore --source=HEAD --staged --worktree gradle.properties >/dev/null 2>&1 || true
+  fi
+}
+trap cleanup ERR INT
 
 sed -i '' -E "s/^mod\.version=.*/mod.version=$NEXT_VERSION/" gradle.properties
-echo "Updated gradle.properties with new version."
+info "Updated gradle.properties with new version."
 
-CHANGELOG=$RELEASE_NOTES DRY_RUN=false ./gradlew buildAndCollect publishMods --warning-mode all
-gh release create "v$NEXT_VERSION" -n "$RELEASE_NOTES" build/libs/*
+info "Committing version bump..."
+git add gradle.properties
+git commit -m "chore(release): v$NEXT_VERSION"
+git tag "v$NEXT_VERSION"
 
-echo "Do not forget to commit the version bump!"
+info "Building & publishing..."
+./gradlew clean buildAndCollect publishMods --warning-mode all
+
+tmp_notes="$(mktemp)"
+printf '%s\n' "$RELEASE_NOTES" > "$tmp_notes"
+
+gh release create "v$NEXT_VERSION" -F "$tmp_notes" build/libs/*
+
+rm -f "$tmp_notes"
+
+info "Done."
+info "Next steps"
+info "  git push --follow-tags"
