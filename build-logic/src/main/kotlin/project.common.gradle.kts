@@ -82,6 +82,7 @@ tasks {
 
         val templateProps = getTemplateProps(mcVersion, loaderName)
 
+        inputs.property("templateProps", templateProps)
         filesMatching(
             listOf(
                 "**/*.toml",
