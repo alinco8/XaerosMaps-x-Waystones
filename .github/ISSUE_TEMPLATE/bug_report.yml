@@ -102,13 +102,13 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Logs (latest.log)
-      description: Paste relevant logs here, or upload them to mclo.gs and paste the link.
+      label: Logs (optional)
+      description: Paste relevant logs (e.g. latest.log) here, or upload them to mclo.gs and paste the link.
       placeholder: Paste logs here or paste an mclo.gs link...
       render: shell
 
   - type: textarea
-    id: additional_information
+    id: additional_information (optional)
     attributes:
       label: Additional information
       description: Provide any other context or references (links, screenshots, related mods, etc.).

@@ -82,6 +82,6 @@ body:
   - type: textarea
     id: additional_information
     attributes:
-      label: Additional information
+      label: Additional information (optional)
       description: Provide any other context or references (links, screenshots, related mods, etc.).
       placeholder: Additional details...

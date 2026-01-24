@@ -44,8 +44,6 @@ body:
       label: Proposed solution (optional)
       description: If you have an idea of how it could work (UI, behavior, settings, etc.), write it here.
       placeholder: e.g. Add a setting called "..." that does ...
-    validations:
-      required: false
 
   - type: textarea
     id: alternatives
@@ -53,12 +51,10 @@ body:
       label: Alternatives (optional)
       description: Any alternative approaches or workarounds you’ve tried.
       placeholder: e.g. I currently work around this by...
-    validations:
-      required: false
 
   - type: textarea
     id: additional_information
     attributes:
-      label: Additional information
+      label: Additional information (optional)
       description: Provide any other context or references (links, screenshots, related mods, etc.).
       placeholder: Additional details...
