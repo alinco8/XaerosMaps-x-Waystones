@@ -68,6 +68,8 @@ legacyForge {
     }
 }
 
+val reobfJar = tasks.named<AbstractArchiveTask>("reobfJar")
+
 tasks {
     named("createMinecraftArtifacts") {
         dependsOn("stonecutterGenerate")
@@ -76,7 +78,7 @@ tasks {
         exclude("fabric.mod.json5", "META-INF/neoforge.mods.toml")
     }
     named<Copy>("buildAndCollect") {
-        from(jar.map { it.archiveFile }, sourcesJar.map { it.archiveFile })
+        from(reobfJar.map { it.archiveFile }, sourcesJar.map { it.archiveFile })
     }
     named<Jar>("jar") {
         manifest {
@@ -88,7 +90,7 @@ tasks {
 }
 
 publishMods {
-    file = tasks.jar.map { it.archiveFile.get() }
+    file = reobfJar.map { it.archiveFile.get() }
     additionalFiles.from(tasks.named<Jar>("sourcesJar").map { it.archiveFile.get() })
 
     val slugs = listOf("kotlin-for-forge")
