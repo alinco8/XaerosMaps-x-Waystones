@@ -60,25 +60,11 @@ body:
     validations:
       required: true
 
-  - type: dropdown
-    id: loader
-    attributes:
-      label: Mod loader
-      description: Select the mod loader you are using.
-      options:
-        - NeoForge
-        - Forge
-        - Fabric
-        - Quilt
-        - Other
-    validations:
-      required: true
-
   - type: input
-    id: loader_version
+    id: loader_info
     attributes:
-      label: Mod loader version
-      description: The version of the mod loader you are using.
+      label: Mod loader and it's version
+      description: The mod loader you are using (e.g., NeoForge, Forge, Fabric) and its version.
       placeholder: e.g. NeoForge 21.1.x / Forge 47.3.x / Fabric Loader 0.16.x
     validations:
       required: true
@@ -90,10 +76,12 @@ body:
       description: List other mods that might be relevant (or write "None/Unknown").
       placeholder: Xaero's Minimap v21.6.0, Xaero's World Map v1.9.6, ...
       render: text
+    validations:
+      required: true
 
   - type: textarea
     id: additional_information
     attributes:
       label: Additional information
-      description: Any extra context that might help (what you were doing, singleplayer/multiplayer, server/modpack, etc.).
-      placeholder: Add any other context here.
+      description: Provide any other context or references (links, screenshots, related mods, etc.).
+      placeholder: Additional details...

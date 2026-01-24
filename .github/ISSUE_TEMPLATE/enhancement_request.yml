@@ -48,26 +48,6 @@ body:
       required: false
 
   - type: textarea
-    id: acceptance_criteria
-    attributes:
-      label: Acceptance criteria (optional)
-      description: What conditions would make this enhancement "done"? (Bulleted list is fine.)
-      placeholder: |
-        - ...
-        - ...
-    validations:
-      required: false
-
-  - type: textarea
-    id: compatibility
-    attributes:
-      label: Environment / compatibility (optional)
-      description: Any constraints or target environments (Minecraft version, loader, singleplayer/multiplayer, etc.).
-      placeholder: e.g. 1.21.1 / NeoForge / should work in multiplayer
-    validations:
-      required: false
-
-  - type: textarea
     id: alternatives
     attributes:
       label: Alternatives (optional)
