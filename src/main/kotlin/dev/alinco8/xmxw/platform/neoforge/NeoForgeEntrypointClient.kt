@@ -1,5 +1,5 @@
 //? if neoforge {
-/*package dev.alinco8.xmxw.platform.neoforge
+package dev.alinco8.xmxw.platform.neoforge
 
 import dev.alinco8.xmxw.UpdateChecker
 import dev.alinco8.xmxw.XMXWClient
@@ -90,4 +90,4 @@ class NeoForgeEntrypointClient(val modContainer: ModContainer) {
         }
     }
 }
-*///? }
+//? }

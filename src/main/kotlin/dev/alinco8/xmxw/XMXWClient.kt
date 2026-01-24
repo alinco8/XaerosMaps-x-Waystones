@@ -1,23 +1,23 @@
 package dev.alinco8.xmxw
 
 //? if <=1.20.1 {
-import net.blay09.mods.waystones.api.KnownWaystonesEvent as WaystonesListReceivedEvent
+/*import net.blay09.mods.waystones.api.KnownWaystonesEvent as WaystonesListReceivedEvent
 import net.blay09.mods.waystones.api.WaystoneUpdateReceivedEvent
 
-//? } else {
-/*import net.blay09.mods.waystones.api.event.WaystonesListReceivedEvent
+*///? } else {
+import net.blay09.mods.waystones.api.event.WaystonesListReceivedEvent
 import net.blay09.mods.waystones.api.event.WaystoneUpdateReceivedEvent
 
-*///? }
+//? }
 
 //? if >=1.21.10 {
-/*import net.minecraft.resources.Identifier as ResourceLocation
+import net.minecraft.resources.Identifier as ResourceLocation
 
-*///?} else {
-import net.minecraft.resources.ResourceLocation
+//?} else {
+/*import net.minecraft.resources.ResourceLocation
 import net.blay09.mods.balm.api.Balm
 
-//? }
+*///? }
 
 import dev.alinco8.xmxw.config.XMXWConfig
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
@@ -42,10 +42,10 @@ object XMXWClient {
     @JvmStatic
     fun loc(path: String): ResourceLocation {
         //? if >=1.21 {
-        /*return ResourceLocation.fromNamespaceAndPath(MOD_ID, path)
-        *///? } else {
-        return ResourceLocation(MOD_ID, path)
-        //? }
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path)
+        //? } else {
+        /*return ResourceLocation(MOD_ID, path)
+        *///? }
     }
 
     @JvmStatic
@@ -57,15 +57,15 @@ object XMXWClient {
         LOGGER.debug("Initializing XMXW Client")
 
         //? if >=1.21.10 {
-        /*WaystonesListReceivedEvent.EVENT.register(::onWaystonesListReceived)
+        WaystonesListReceivedEvent.EVENT.register(::onWaystonesListReceived)
 
-        *///? } else {
-        Balm.getEvents().apply {
+        //? } else {
+        /*Balm.getEvents().apply {
             onEvent(WaystonesListReceivedEvent::class.java, ::onWaystonesListReceived)
             onEvent(WaystoneUpdateReceivedEvent::class.java, ::onWaystoneUpdateReceived)
         }
 
-        //? }
+        *///? }
     }
 
     val waystones = mutableMapOf<ResourceLocation, MutableList<WaystoneData>>()
@@ -84,10 +84,10 @@ object XMXWClient {
 
     fun onWaystonesListReceived(event: WaystonesListReceivedEvent) {
         //? if <=1.20.1 {
-        val receivedWaystones = event.waystones.groupBy { it.waystoneType }
-        //? } else {
-        /*val receivedWaystones = mapOf(event.waystoneType to event.waystones)
-        *///? }
+        /*val receivedWaystones = event.waystones.groupBy { it.waystoneType }
+        *///? } else {
+        val receivedWaystones = mapOf(event.waystoneType to event.waystones)
+        //? }
 
         LOGGER.debug(
             "Received waystones list with {} waystone types and total of {} waystones",
@@ -122,10 +122,10 @@ object XMXWClient {
                     waystone.pos.y,
                     waystone.pos.z,
                     //? if <=1.20.1 {
-                    waystone.name,
-                    //? } else {
-                    /*waystone.name.string,
-                    *///? }
+                    /*waystone.name,
+                    *///? } else {
+                    waystone.name.string,
+                    //? }
                     waystoneType,
                     waystone.waystoneUid,
                 )
@@ -157,10 +157,10 @@ object XMXWClient {
             waystone.pos.y,
             waystone.pos.z,
             //? if <=1.20.1 {
-            waystone.name,
-            //? } else {
-            /*waystone.name.string,
-            *///? }
+            /*waystone.name,
+            *///? } else {
+            waystone.name.string,
+            //? }
             waystone.waystoneType,
             waystone.waystoneUid,
         )
@@ -202,7 +202,7 @@ object XMXWClient {
 }
 
 //? if >=1.21.10 {
-/*fun <T : Any> ResourceKey<T>.loc() = this.identifier()
-*///? } else {
-fun <T : Any> ResourceKey<T>.loc() = this.location()
-//? }
+fun <T : Any> ResourceKey<T>.loc() = this.identifier()
+//? } else {
+/*fun <T : Any> ResourceKey<T>.loc() = this.location()
+*///? }

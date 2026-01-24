@@ -1,5 +1,5 @@
 //? if fabric {
-package dev.alinco8.xmxw.platform.fabric
+/*package dev.alinco8.xmxw.platform.fabric
 
 import dev.alinco8.xmxw.UpdateChecker
 import dev.alinco8.xmxw.XMXWClient
@@ -47,4 +47,4 @@ class FabricEntrypointClient : ClientModInitializer {
         }
     }
 }
-//? }
+*///? }

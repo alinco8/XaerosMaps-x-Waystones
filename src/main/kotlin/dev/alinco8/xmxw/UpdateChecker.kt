@@ -22,10 +22,10 @@ internal object UpdateChecker {
             .query(
                 "loaders", listOf(
                     //? if fabric {
-                    "fabric",
-                    //? } else if neoforge {
-                    /*"neoforge",
-                    *///? } else if forge {
+                    /*"fabric",
+                    *///? } else if neoforge {
+                    "neoforge",
+                    //? } else if forge {
                     /*"forge",
                     *///? }
                 )
@@ -33,10 +33,10 @@ internal object UpdateChecker {
             .query(
                 "game_versions", listOf(
                     //? if <=1.21.5 {
-                    SharedConstants.getCurrentVersion().name,
-                    //? } else {
-                    /*SharedConstants.getCurrentVersion().name(),
-                    *///? }
+                    /*SharedConstants.getCurrentVersion().name,
+                    *///? } else {
+                    SharedConstants.getCurrentVersion().name(),
+                    //? }
                 )
             )
             .build()

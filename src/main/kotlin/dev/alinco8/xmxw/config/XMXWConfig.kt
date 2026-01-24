@@ -14,12 +14,12 @@ class XMXWConfig {
                 .id(XMXWClient.loc("config"))
                 .serializer { config ->
                     //? if fabric {
-                    val configPath =
+                    /*val configPath =
                         net.fabricmc.loader.api.FabricLoader.getInstance().configDir.resolve("config.json")
-                    //? } else if neoforge {
-                    /*val configPath = net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get()
+                    *///? } else if neoforge {
+                    val configPath = net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get()
                         .resolve("${XMXWClient.MOD_ID}.json")
-                    *///? } else if forge {
+                    //? } else if forge {
                     /*val configPath = net.minecraftforge.fml.loading.FMLPaths.CONFIGDIR.get()
                         .resolve("${XMXWClient.MOD_ID}.json")
                     *///? }

@@ -17,10 +17,10 @@ import xaero.map.mods.SupportXaeroMinimap;
 import xaero.map.mods.gui.Waypoint;
 
 //? if >=1.21.6 {
-/*import xaero.hud.minimap.waypoint.set.WaypointSet;
- *///? } else {
-import xaero.common.minimap.waypoints.WaypointSet;
-    //? }
+import xaero.hud.minimap.waypoint.set.WaypointSet;
+ //? } else {
+/*import xaero.common.minimap.waypoints.WaypointSet;
+    *///? }
 
 @Mixin(SupportXaeroMinimap.class)
 abstract
