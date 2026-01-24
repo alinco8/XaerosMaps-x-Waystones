@@ -1,6 +1,7 @@
 name: Crash Report
 description: The game crashed or failed to start
 labels: [ "Status: Todo", "Type: Crash" ]
+assignees: [ "alinco8" ]
 
 body:
   - type: markdown

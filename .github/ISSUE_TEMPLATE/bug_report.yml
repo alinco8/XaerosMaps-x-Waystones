@@ -1,6 +1,7 @@
 name: Bug Report
 description: Something isn't working as expected
 labels: [ "Status: Todo", "Type: Bug" ]
+assignees: [ "alinco8" ]
 
 body:
   - type: markdown

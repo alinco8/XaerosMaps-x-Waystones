@@ -1,6 +1,7 @@
 name: Enhancement Request
 description: Suggest an improvement to an existing feature
 labels: [ "Status: Todo", "Type: Enhancement" ]
+assignees: [ "alinco8" ]
 
 body:
   - type: markdown

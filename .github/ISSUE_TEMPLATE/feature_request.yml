@@ -1,6 +1,7 @@
 name: Feature Request
 description: Suggest a new feature
 labels: [ "Status: Todo", "Type: Feature" ]
+assignees: [ "alinco8" ]
 
 body:
   - type: markdown
