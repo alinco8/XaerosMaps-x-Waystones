@@ -9,6 +9,7 @@ import xaero.hud.minimap.waypoint.WaypointVisibilityType
 import dev.alinco8.xmxw.XMXWClient
 import dev.alinco8.xmxw.config.yacl.HighlightedStringControllerBuilder
 import dev.alinco8.xmxw.config.yacl.configScreen
+import dev.alinco8.xmxw.loc
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
@@ -20,6 +21,7 @@ import net.minecraft.network.chat.Style
 import xaero.hud.minimap.waypoint.WaypointColor
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty0
+import net.minecraft.client.Minecraft
 
 private fun <T : Any> Option.Builder<T>.bind(
     default: KProperty0<T>,
@@ -34,7 +36,11 @@ object ConfigScreen {
 
         return configScreen("xmxw") {
             builder.title(t("title"))
-            builder.save(h::save)
+            builder.save {
+                h.save()
+                val player = Minecraft.getInstance().player ?: return@save
+                XMXWClient.updateWaystoneWaypoints(player.level().dimension().loc())
+            }
 
             category("waypoint") {
                 builder.name(t("name"))
