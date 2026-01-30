@@ -5,27 +5,31 @@ xmxw:
   config:
     title: "XMXWの設定"
     categories:
-      general:
+      waypoint:
         name: "一般"
         groups:
-          waypoint:
-            name: "ウェイポイント"
+          offset:
+            name: "オフセット"
             options:
-              title:
-                name: "ウェイポイントのタイトル"
-                description: "ウェイポイントに表示されるタイトルを設定。"
-              nameFormat:
-                name: "ウェイポイント名の形式"
-                description: "ウェイポイント名の形式を選択。"
-              color:
-                name: "ウェイポイントの色"
-                description: "ウェイポイントの色を選択。"
-              offsetX:
-                name: "Xオフセット"
+              x:
+                name: "X"
                 description: "ウェイポイント表示のXオフセットを設定。"
-              offsetY:
-                name: "Yオフセット"
+              y:
+                name: "Y"
                 description: "ウェイポイント表示のYオフセットを設定。"
-              offsetZ:
-                name: "Zオフセット"
+              z:
+                name: "Z"
                 description: "ウェイポイント表示のZオフセットを設定。"
+        options:
+          title:
+            name: "ウェイポイントのタイトル"
+            description: "ウェイポイントに表示されるタイトルを設定。"
+          nameFormat:
+            name: "ウェイポイント名の形式"
+            description: "ウェイポイント名の形式を選択。"
+          color:
+            name: "ウェイポイントの色"
+            description: "ウェイポイントの色を選択。"
+          visibility:
+            name: "可視性"
+            description: "ウェイポイントの可視性を選択。"

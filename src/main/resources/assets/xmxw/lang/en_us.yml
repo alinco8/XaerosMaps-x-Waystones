@@ -5,27 +5,31 @@ xmxw:
   config:
     title: "XMXW Config"
     categories:
-      general:
-        name: "General"
+      waypoint:
+        name: "Waypoint"
         groups:
-          waypoint:
-            name: "Waypoint"
+          offset:
+            name: "Offset"
             options:
-              title:
-                name: "Title"
-                description: "Set the title displayed on waypoints."
-              nameFormat:
-                name: "Name Format"
-                description: "Select the format for waypoint names."
-              color:
-                name: "Color"
-                description: "Choose the color of the waypoint."
-              offsetX:
-                name: "Offset X"
+              x:
+                name: "X"
                 description: "Set the X offset for the waypoint display."
-              offsetY:
-                name: "Offset Y"
+              y:
+                name: "Y"
                 description: "Set the Y offset for the waypoint display."
-              offsetZ:
-                name: "Offset Z"
+              z:
+                name: "Z"
                 description: "Set the Z offset for the waypoint display."
+        options:
+          title:
+            name: "Title"
+            description: "Set the title displayed on waypoints."
+          nameFormat:
+            name: "Name Format"
+            description: "Select the format for waypoint names."
+          color:
+            name: "Color"
+            description: "Choose the color of the waypoint."
+          visibility:
+            name: "Visibility"
+            description: "Set the visibility of the waypoint."

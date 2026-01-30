@@ -202,7 +202,9 @@ object XMXWClient {
                     waypointName,
                     config.waypointTitle,
                     config.waypointColor,
-                )
+                ).also {
+                    it.visibility = config.waypointVisibility
+                }
             }
         }
     }
