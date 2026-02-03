@@ -11,13 +11,13 @@ import net.blay09.mods.waystones.api.event.WaystoneUpdateReceivedEvent
 //? }
 
 //? if >=1.21.10 {
-import net.minecraft.resources.Identifier as ResourceLocation
+/*import net.minecraft.resources.Identifier as ResourceLocation
 
-//?} else {
-/*import net.minecraft.resources.ResourceLocation
+*///?} else {
+import net.minecraft.resources.ResourceLocation
 import net.blay09.mods.balm.api.Balm
 
-*///? }
+//? }
 
 import dev.alinco8.xmxw.config.XMXWConfig
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
@@ -64,15 +64,15 @@ object XMXWClient {
         LOGGER.debug("Initializing XMXW Client")
 
         //? if >=1.21.10 {
-        WaystonesListReceivedEvent.EVENT.register(::onWaystonesListReceived)
+        /*WaystonesListReceivedEvent.EVENT.register(::onWaystonesListReceived)
 
-        //? } else {
-        /*Balm.getEvents().apply {
+        *///? } else {
+        Balm.getEvents().apply {
             onEvent(WaystonesListReceivedEvent::class.java, ::onWaystonesListReceived)
             onEvent(WaystoneUpdateReceivedEvent::class.java, ::onWaystoneUpdateReceived)
         }
 
-        *///? }
+        //? }
     }
 
     val waystones = mutableMapOf<ResourceLocation, MutableList<WaystoneData>>()
@@ -211,7 +211,7 @@ object XMXWClient {
 }
 
 //? if >=1.21.10 {
-fun <T : Any> ResourceKey<T>.loc() = this.identifier()
-//? } else {
-/*fun <T : Any> ResourceKey<T>.loc() = this.location()
-*///? }
+/*fun <T : Any> ResourceKey<T>.loc() = this.identifier()
+*///? } else {
+fun <T : Any> ResourceKey<T>.loc() = this.location()
+//? }

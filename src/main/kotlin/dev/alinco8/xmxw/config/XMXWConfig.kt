@@ -1,10 +1,10 @@
 package dev.alinco8.xmxw.config
 
 //? if >=1.21.5 {
-import xaero.hud.minimap.waypoint.WaypointVisibilityType
-//? } else {
-/*import xaero.common.minimap.waypoints.WaypointVisibilityType
-*///? }
+/*import xaero.hud.minimap.waypoint.WaypointVisibilityType
+*///? } else {
+import xaero.common.minimap.waypoints.WaypointVisibilityType
+//? }
 
 import dev.alinco8.xmxw.XMXWClient
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler

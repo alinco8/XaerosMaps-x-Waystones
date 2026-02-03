@@ -33,10 +33,10 @@ internal object UpdateChecker {
             .query(
                 "game_versions", listOf(
                     //? if <=1.21.5 {
-                    /*SharedConstants.getCurrentVersion().name,
-                    *///? } else {
-                    SharedConstants.getCurrentVersion().name(),
-                    //? }
+                    SharedConstants.getCurrentVersion().name,
+                    //? } else {
+                    /*SharedConstants.getCurrentVersion().name(),
+                    *///? }
                 )
             )
             .build()

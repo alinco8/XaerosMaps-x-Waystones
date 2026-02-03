@@ -6,7 +6,7 @@ plugins {
     id("project.base")
 }
 
-stonecutter active "1.21.11-neoforge"
+stonecutter active "1.21.1-neoforge"
 
 stonecutter parameters {
     constants.match(
