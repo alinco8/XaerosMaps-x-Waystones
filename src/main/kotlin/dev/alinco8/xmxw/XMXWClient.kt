@@ -62,6 +62,7 @@ object XMXWClient {
 
     fun initialize() {
         LOGGER.debug("Initializing XMXW Client")
+        XMXWConfig.HANDLER.load()
 
         //? if >=1.21.10 {
         /*WaystonesListReceivedEvent.EVENT.register(::onWaystonesListReceived)
