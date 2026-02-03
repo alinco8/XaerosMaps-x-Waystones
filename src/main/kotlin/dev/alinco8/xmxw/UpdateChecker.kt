@@ -2,6 +2,7 @@ package dev.alinco8.xmxw
 
 import com.google.gson.Gson
 import dev.alinco8.xmxw.XMXWClient.LOGGER
+import dev.alinco8.xmxw.config.XMXWConfig
 import java.net.URI
 import java.net.URLEncoder
 import java.net.http.HttpClient
@@ -61,6 +62,8 @@ internal object UpdateChecker {
     }
 
     fun checkUpdate(currentVersion: String): String? {
+        if (XMXWConfig.HANDLER.instance().disableUpdateCheck) return null
+
         fetchLatestVersion()?.let { latestVersion ->
             if (currentVersion != latestVersion) {
                 LOGGER.info("New version available: $latestVersion (current: $currentVersion)")

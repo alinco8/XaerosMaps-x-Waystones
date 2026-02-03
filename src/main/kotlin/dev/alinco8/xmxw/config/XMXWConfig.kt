@@ -63,4 +63,7 @@ class XMXWConfig {
 
     @SerialEntry
     var waypointOffsetZ = 0
+
+    @SerialEntry
+    var disableUpdateCheck = false
 }
