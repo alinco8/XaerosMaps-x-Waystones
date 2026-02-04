@@ -30,6 +30,7 @@ import xaero.common.minimap.waypoints.Waypoint
 import xaero.hud.minimap.BuiltInHudModules
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import xaero.hud.minimap.waypoint.WaypointColor
 
 object XMXWClient {
     const val MOD_ID = "xmxw"
@@ -196,13 +197,22 @@ object XMXWClient {
                     waypointName = waypointName.replace("{$key}", replacer(waystone))
                 }
 
+                val validColors = config.waypointColorCandidates.filter { it.value }.keys.toList()
+                val waypointColor = if (validColors.isNotEmpty()) {
+                    validColors[Math.floorMod(
+                        (waystone.id.mostSignificantBits),
+                        validColors.size
+                    )]
+                } else {
+                    WaypointColor.GRAY
+                }
                 waypoints[index] = Waypoint(
                     waystone.x + config.waypointOffsetX,
                     waystone.y + config.waypointOffsetY,
                     waystone.z + config.waypointOffsetZ,
                     waypointName,
                     config.waypointTitle,
-                    config.waypointColor,
+                    waypointColor,
                 ).also {
                     it.visibility = config.waypointVisibility
                 }

@@ -15,13 +15,15 @@ import dev.isxander.yacl3.api.OptionDescription
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder
 import dev.isxander.yacl3.api.controller.StringControllerBuilder
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder
 import net.minecraft.ChatFormatting
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Style
-import xaero.hud.minimap.waypoint.WaypointColor
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty0
 import net.minecraft.client.Minecraft
+import net.minecraft.network.chat.Component
+import xaero.hud.minimap.waypoint.WaypointColor
 
 private fun <T : Any> Option.Builder<T>.bind(
     default: KProperty0<T>,
@@ -90,23 +92,6 @@ object ConfigScreen {
                     }
                 }
 
-                option("color") {
-                    name(t("name"))
-                    builder.description(OptionDescription.of(t("description")))
-                    builder.bind(d::waypointColor, i::waypointColor)
-                    builder.controller { opt ->
-                        EnumControllerBuilder
-                            .create(opt)
-                            .enumClass(WaypointColor::class.java)
-                            .formatValue { color ->
-                                color
-                                    .getName()
-                                    .copy()
-                                    .withStyle(Style.EMPTY.withColor(color.hex))
-                            }
-                    }
-                }
-
                 option("visibility") {
                     name(t("name"))
                     builder.description(OptionDescription.of(t("description")))
@@ -118,6 +103,40 @@ object ConfigScreen {
                             .formatValue { vis ->
                                 vis.translation
                             }
+                    }
+                }
+
+                group("colorCandidates") {
+                    name(t("name"))
+
+                    builder.collapsed(true)
+
+                    WaypointColor.entries.sortedBy { it.name }.forEach { color ->
+                        builder.option(
+                            Option.createBuilder<Boolean>()
+                                .name(
+                                    Component.literal(color.name)
+                                        .withStyle(Style.EMPTY.withColor(color.hex))
+                                )
+                                .description(
+                                    OptionDescription.of(
+                                        i18n.option(
+                                            categoryId,
+                                            groupId,
+                                            "_color",
+                                            "description",
+                                            color.name
+                                        )
+                                    )
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .binding(
+                                    d.waypointColorCandidates[color] ?: false,
+                                    { i.waypointColorCandidates[color] ?: false },
+                                    { i.waypointColorCandidates[color] = it },
+                                )
+                                .build()
+                        )
                     }
                 }
             }

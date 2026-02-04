@@ -19,7 +19,8 @@ internal class I18n(
     fun category(
         categoryId: String,
         path: String,
-    ): Component = Component.translatable(key(listOf(modId, "config", "categories", categoryId, path)))
+    ): Component =
+        Component.translatable(key(listOf(modId, "config", "categories", categoryId, path)))
 
     fun group(
         categoryId: String,
@@ -45,6 +46,7 @@ internal class I18n(
         groupId: String?,
         optionName: String,
         path: String,
+        vararg args: Any,
     ): Component =
         Component.translatable(
             key(
@@ -62,6 +64,7 @@ internal class I18n(
                     add(path)
                 },
             ),
+            *args,
         )
 }
 
@@ -126,6 +129,7 @@ internal class GroupScope(
         OptionScope(i18n, categoryId, groupId, optionName, optBuilder).apply(block)
         builder.option(optBuilder.build())
     }
+
 
     fun name(component: Component) {
         builder.name(component)

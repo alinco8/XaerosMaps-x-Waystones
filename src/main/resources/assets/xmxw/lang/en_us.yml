@@ -20,6 +20,11 @@ xmxw:
               z:
                 name: "Z"
                 description: "Set the Z offset for the waypoint display."
+          colorCandidates:
+            name: "Color Candidates"
+            options:
+              _color:
+                description: "Use %s as a candidate for random colors."
         options:
           title:
             name: "Title"

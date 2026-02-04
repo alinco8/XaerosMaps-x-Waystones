@@ -50,7 +50,8 @@ class XMXWConfig {
     var waypointNameFormat = "{name} [W]"
 
     @SerialEntry
-    var waypointColor = WaypointColor.GRAY
+    var waypointColorCandidates: MutableMap<WaypointColor, Boolean> =
+        WaypointColor.entries.associateWith { true }.toMutableMap()
 
     @SerialEntry
     var waypointVisibility = WaypointVisibilityType.LOCAL

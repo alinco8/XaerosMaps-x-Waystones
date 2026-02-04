@@ -20,6 +20,11 @@ xmxw:
               z:
                 name: "Z"
                 description: "ウェイポイント表示のZオフセットを設定。"
+          colorCandidates:
+            name: "色の候補"
+            options:
+              _color:
+                description: "%sをランダムな色の候補として使用するかどうか。"
         options:
           title:
             name: "ウェイポイントのタイトル"
@@ -27,9 +32,6 @@ xmxw:
           nameFormat:
             name: "ウェイポイント名の形式"
             description: "ウェイポイント名の形式を選択。"
-          color:
-            name: "ウェイポイントの色"
-            description: "ウェイポイントの色を選択。"
           visibility:
             name: "可視性"
             description: "ウェイポイントの可視性を選択。"
