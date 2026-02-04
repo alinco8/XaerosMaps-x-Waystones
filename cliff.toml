@@ -6,8 +6,8 @@ body = """
     {% for commit in commits %}
         - {% if commit.scope and commit.scope != "release" %}*({{ commit.scope }})* {% endif %}\
             {% if commit.breaking %}[**breaking**] {% endif %}\
-            {%- set closes = commit.footers | filter(attribute="token", value="Closes") -%}
-            {{ commit.message | upper_first }} {%- if closes | length > 0 %} ({{ closes | map(attribute="value") | join(sep=", ") }}){%- endif -%}
+            {%- set closed = commit.footers | filter(attribute="token", value="closed") -%}
+            {{ commit.message | upper_first }} {%- if closed | length > 0 %} ({{ closed | map(attribute="value") | join(sep=", ") }}){%- endif -%}
     {% endfor %}
 {% endfor %}
 """
