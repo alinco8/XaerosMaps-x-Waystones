@@ -14,6 +14,8 @@ import xaero.hud.minimap.waypoint.WaypointColor
 
 class XMXWConfig {
     companion object {
+        const val CONFIG_FILE_NAME = "${XMXWClient.MOD_ID}.json"
+
         @JvmStatic
         val HANDLER: ConfigClassHandler<XMXWConfig> =
             ConfigClassHandler
@@ -21,23 +23,16 @@ class XMXWConfig {
                 .id(XMXWClient.loc("config"))
                 .serializer { config ->
                     //? if fabric {
-                    /*val configPath =
-                        net.fabricmc.loader.api.FabricLoader.getInstance().configDir.resolve("config.json")
-                     */
-                    //? } else if neoforge {
-                    val configPath =
-                        net.neoforged.fml.loading.FMLPaths.CONFIGDIR
-                            .get()
-                            .resolve("${XMXWClient.MOD_ID}.json")
+                    /*val configPath = net.fabricmc.loader.api.FabricLoader.getInstance().configDir
+                    *///? } else if neoforge {
+                    val configPath = net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get()
                     //? } else if forge {
                     /*val configPath = net.minecraftforge.fml.loading.FMLPaths.CONFIGDIR.get()
-                        .resolve("${XMXWClient.MOD_ID}.json")
-                     */
-                    //? }
+                    *///? }
 
                     GsonConfigSerializerBuilder
                         .create(config)
-                        .setPath(configPath)
+                        .setPath(configPath.resolve(CONFIG_FILE_NAME))
                         .setJson5(true)
                         .build()
                 }.build()
