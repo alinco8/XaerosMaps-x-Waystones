@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Requires: gum, jq
+set -euo pipefail
+
+info() {
+  gum log -l info "$1"
+}
+fatal() {
+  gum log -l fatal "$1"
+  exit 1
+}
+
+neo_versions="$(curl -sL https://maven.neoforged.net/api/maven/versions/releases/net%2Fneoforged%2Fneoforge | jq -r '.versions[]')"
+
+for version in versions/*; do
+  version=$(basename "$version")
+  info "Bumping $version"
+
+  loader=${version#*-}
+  mc=${version%%-*}
+
+  case "$loader" in
+    fabric)
+      ;;
+    forge)
+      ;;
+    neoforge)
+      prefix=${mc/1./}
+      latest_neo=$(echo "$neo_versions" | grep "^$prefix\." | tail -n 1)
+      current_neo=$(< "versions/$version/gradle.properties" grep "deps.neoforge=" | cut -d= -f2 | tr -d ' ')
+      if [ "$current_neo" = "$latest_neo" ]; then
+        info "NeoForge is already up to date at $current_neo"
+        continue
+      fi
+      info "Updating NeoForge from $current_neo to $latest_neo"
+
+      sed -i '' "s/deps.neoforge=$current_neo/deps.neoforge=$latest_neo/" "versions/$version/gradle.properties"
+
+      ;;
+    *)
+      fatal "Unknown loader $loader"
+      ;;
+  esac
+done
