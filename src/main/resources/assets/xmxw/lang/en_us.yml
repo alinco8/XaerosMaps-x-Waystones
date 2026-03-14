@@ -28,7 +28,10 @@ xmxw:
         options:
           title:
             name: "Title"
-            description: "Set the title displayed on waypoints."
+            description:
+              0: "Set the title displayed on waypoints. placeholders:"
+              1: "  %s: the waypoint name"
+              2: "  %s: the first letter of the waypoint name"
           nameFormat:
             name: "Name Format"
             description: "Select the format for waypoint names."

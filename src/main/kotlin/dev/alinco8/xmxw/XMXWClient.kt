@@ -227,7 +227,12 @@ object XMXWClient {
                     waystone.y + config.waypointOffsetY,
                     waystone.z + config.waypointOffsetZ,
                     waypointName,
-                    config.waypointTitle,
+                    config.waypointTitle
+                        .replace("{name}", waypointName)
+                        .replace(
+                            "{name|first_letter}",
+                            waypointName.firstOrNull()?.toString() ?: ""
+                        ),
                     waypointColor,
                 )
                 waypoint.visibility = config.waypointVisibility

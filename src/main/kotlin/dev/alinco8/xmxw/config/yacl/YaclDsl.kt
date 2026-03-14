@@ -144,7 +144,8 @@ internal class OptionScope<T>(
     val optionName: String,
     val builder: Option.Builder<T>,
 ) {
-    fun t(path: String) = i18n.option(categoryId, groupId, optionName, path)
+    fun t(path: String, vararg args: Any) =
+        i18n.option(categoryId, groupId, optionName, path, *args)
 
     fun name(component: Component) {
         builder.name(component)

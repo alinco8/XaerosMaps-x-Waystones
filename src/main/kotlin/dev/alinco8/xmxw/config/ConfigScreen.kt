@@ -72,7 +72,13 @@ object ConfigScreen {
 
                 option("title") {
                     name(t("name"))
-                    builder.description(OptionDescription.of(t("description")))
+                    builder.description(
+                        OptionDescription.of(
+                            t("description.0"),
+                            t("description.1", "{name}"),
+                            t("description.2", "{name|first_letter}"),
+                        )
+                    )
                     builder.bind(d::waypointTitle, i::waypointTitle)
                     builder.controller(StringControllerBuilder::create)
                 }
