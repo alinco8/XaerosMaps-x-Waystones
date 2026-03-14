@@ -1,8 +1,10 @@
 package dev.alinco8.xmxw.mixin.compat.xaeroworldmap;
 
 import dev.alinco8.xmxw.XMXWClient;
-import dev.alinco8.xmxw.api.WaypointExtraHolder;
+import dev.alinco8.xmxw.XMXWWorldData;
+import dev.alinco8.xmxw.api.CustomWaypointDataHolder;
 import java.util.ArrayList;
+import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -29,8 +31,8 @@ class WaypointReaderMixin {
     private void getRightInjectRightClickOptions(Waypoint element, IRightClickableElement target,
         CallbackInfoReturnable<ArrayList<RightClickOption>> cir
     ) {
-        Boolean isCustom = ((WaypointExtraHolder) element).xmxw$getIsCustom();
-        if (isCustom == null || !isCustom) {return;}
+        UUID waystoneId = ((CustomWaypointDataHolder) element).xmxw$getWaystoneId();
+        if (waystoneId == null) {return;}
         cir.cancel();
 
         ArrayList<RightClickOption> rightClickOptions = new ArrayList<>();
@@ -69,6 +71,35 @@ class WaypointReaderMixin {
                 public void onAction(Screen screen) {
                     SupportMods.xaeroMinimap.shareWaypoint(element, (GuiMap) screen,
                         SupportMods.xaeroMinimap.getWaypointWorld());
+                }
+            });
+        rightClickOptions.add(
+            new RightClickOption("Hide waypoint", rightClickOptions.size(), target) {
+                public void onAction(Screen screen) {
+                    XMXWWorldData worldData = XMXWClient.INSTANCE.getWorldData();
+                    if (worldData == null) {
+                        XMXWClient.LOGGER.warn("No world data found");
+                        return;
+                    }
+
+                    var w = worldData.getWaystonePoints().get(waystoneId);
+                    if (w == null) {
+                        XMXWClient.LOGGER.warn("No waystone found: {}", waystoneId);
+                        return;
+                    }
+
+                    w.setHidden(true);
+                    var level = Minecraft.getInstance().level;
+                    if (level != null) {
+                        //? if >=1.21.10 {
+                            /*XMXWClient.INSTANCE.updateWaystoneWaypoints(
+                                level.dimension().identifier());
+                             *///? } else {
+                        XMXWClient.INSTANCE.updateWaystoneWaypoints(
+                            level.dimension().location());
+                        //? }
+                    }
+                    SupportMods.xaeroMinimap.disableWaypoint(element);
                 }
             });
 

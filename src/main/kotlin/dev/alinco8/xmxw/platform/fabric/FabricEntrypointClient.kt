@@ -19,8 +19,10 @@ class FabricEntrypointClient : ClientModInitializer {
 
         val modContainer = FabricLoader.getInstance()
             .getModContainer(XMXWClient.MOD_ID).orElseThrow()
-        
+
         ClientPlayConnectionEvents.JOIN.register { _, _, minecraft ->
+            XMXWClient.onJoinWorld()
+
             XMXWClient.onDimensionChange(
                 minecraft.level?.dimension()?.loc() ?: return@register
             )
@@ -37,6 +39,10 @@ class FabricEntrypointClient : ClientModInitializer {
 
             }
         }
+        ClientPlayConnectionEvents.DISCONNECT.register { _, _ ->
+            XMXWClient.onLeaveWorld()
+        }
+
         ClientTickEvents.END_CLIENT_TICK.register { client ->
             val level = client.level ?: return@register
             if (level == lastWorld) return@register

@@ -7,29 +7,27 @@ import net.blay09.mods.waystones.api.WaystoneUpdateReceivedEvent
 *///? } else {
 import net.blay09.mods.waystones.api.event.WaystonesListReceivedEvent
 import net.blay09.mods.waystones.api.event.WaystoneUpdateReceivedEvent
-
 //? }
 
 //? if >=1.21.10 {
 /*import net.minecraft.resources.Identifier as ResourceLocation
-
 *///?} else {
 import net.minecraft.resources.ResourceLocation
 import net.blay09.mods.balm.api.Balm
-
 //? }
 
+import dev.alinco8.xmxw.api.CustomWaypointDataHolder
 import dev.alinco8.xmxw.config.XMXWConfig
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
-import java.util.UUID
+import java.util.*
 import net.minecraft.ChatFormatting
 import net.minecraft.client.Minecraft
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
-import xaero.common.minimap.waypoints.Waypoint
-import xaero.hud.minimap.BuiltInHudModules
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import xaero.common.minimap.waypoints.Waypoint
+import xaero.hud.minimap.BuiltInHudModules
 import xaero.hud.minimap.waypoint.WaypointColor
 
 object XMXWClient {
@@ -81,6 +79,7 @@ object XMXWClient {
     val waypoints: Int2ObjectMap<Waypoint>?
         get() = BuiltInHudModules.MINIMAP?.currentSession
             ?.worldManager?.getCustomWaypoints(loc("waypoints"))
+    var worldData: XMXWWorldData? = null
 
     data class WaystoneData(
         val x: Int,
@@ -108,6 +107,8 @@ object XMXWClient {
             waystones.clear()
 
             updateWaystoneWaypoints(Minecraft.getInstance().level?.dimension()?.loc() ?: return)
+
+            return
         }
 
         for ((waystoneType, receivedWaystones) in receivedWaystones) {
@@ -183,6 +184,16 @@ object XMXWClient {
         updateWaystoneWaypoints(dimKey)
     }
 
+    fun onJoinWorld() {
+        worldData = XMXWWorldData.loadFromCurrentWorld()
+        LOGGER.debug("worldData: {}", com.google.gson.Gson().toJson(worldData))
+    }
+
+    fun onLeaveWorld() {
+        worldData?.save()
+        worldData = null
+    }
+
     fun updateWaystoneWaypoints(dimKey: ResourceLocation) {
         LOGGER.debug("Updating waypoints for dimension {}", dimKey)
 
@@ -206,16 +217,42 @@ object XMXWClient {
                 } else {
                     WaypointColor.GRAY
                 }
-                waypoints[index] = Waypoint(
+
+                if (worldData?.waystonePoints?.get(waystone.id)?.hidden == true) {
+                    LOGGER.debug("Waypoint {} is hidden in world data, skipping", waypointName)
+                    return@forEachIndexed
+                }
+                val waypoint = Waypoint(
                     waystone.x + config.waypointOffsetX,
                     waystone.y + config.waypointOffsetY,
                     waystone.z + config.waypointOffsetZ,
                     waypointName,
                     config.waypointTitle,
                     waypointColor,
-                ).also {
-                    it.visibility = config.waypointVisibility
-                }
+                )
+                waypoint.visibility = config.waypointVisibility
+                (waypoint as CustomWaypointDataHolder).`xmxw$setWaystoneId`(waystone.id)
+                waypoints[index] = waypoint
+                worldData?.waystonePoints?.put(
+                    waystone.id, XMXWWorldData.WaystonePoint(
+                        waystone.id,
+                        worldData?.waystonePoints?.get(waystone.id)?.hidden ?: false,
+                        waystone.name,
+                    )
+                )
+            }
+
+            val existingIds = waystones.values
+                .flatten()
+                .map { it.id }
+                .toSet()
+            val idsToRemove = worldData?.waystonePoints?.values
+                ?.filter { it.waystoneId !in existingIds }
+                ?.map { it.waystoneId }
+                .orEmpty()
+            idsToRemove.forEach { id ->
+                LOGGER.debug("Waystone with id {} not found, removing waypoint", id)
+                worldData?.waystonePoints?.remove(id)
             }
         }
     }

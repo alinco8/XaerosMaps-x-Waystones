@@ -140,6 +140,25 @@ object ConfigScreen {
                     }
                 }
             }
+
+            if (XMXWClient.worldData != null) {
+                category("worldData") {
+                    builder.name(t("name"))
+
+                    for (w in XMXWClient.worldData!!.waystonePoints.values) {
+                        group("_waystonePoint") {
+                            builder.collapsed(true)
+                            name(Component.literal(w.cachedName))
+                            option("hide") {
+                                name(t("name"))
+                                builder.description(OptionDescription.of(t("description")))
+                                builder.bind(w::hidden, w::hidden)
+                                builder.controller(TickBoxControllerBuilder::create)
+                            }
+                        }
+                    }
+                }
+            }
         }.generateScreen(parent)
     }
 }

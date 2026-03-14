@@ -38,3 +38,11 @@ xmxw:
           visibility:
             name: "Visibility"
             description: "Set the visibility of the waypoint."
+      worldData:
+        name: "World Data"
+        groups:
+          _waystonePoint:
+            options:
+              hide:
+                name: "Hide"
+                description: "Hide the waystone point."

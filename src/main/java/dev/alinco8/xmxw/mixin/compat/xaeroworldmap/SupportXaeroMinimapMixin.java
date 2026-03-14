@@ -1,6 +1,6 @@
 package dev.alinco8.xmxw.mixin.compat.xaeroworldmap;
 
-import dev.alinco8.xmxw.api.WaypointExtraHolder;
+import dev.alinco8.xmxw.api.CustomWaypointDataHolder;
 import java.util.ArrayList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -63,10 +63,13 @@ class SupportXaeroMinimapMixin {
 
         for (xaero.common.minimap.waypoints.Waypoint w : list) {
             if (showingDisabled || !w.isDisabled()) {
-                Waypoint convertedWaypoint = this.convertWaypoint(w, true, "Custom Waypoints",
+                var waypoint = this.convertWaypoint(w, true, "Custom Waypoints",
                     dimDiv);
-                ((WaypointExtraHolder) convertedWaypoint).xmxw$setIsCustom(true);
-                result.add(convertedWaypoint);
+                ((CustomWaypointDataHolder) waypoint).xmxw$setWaystoneId(
+                    ((CustomWaypointDataHolder) w).xmxw$getWaystoneId()
+                );
+
+                result.add(waypoint);
             }
         }
 

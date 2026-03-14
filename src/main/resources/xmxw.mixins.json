@@ -9,7 +9,9 @@
   "client": [
     "compat.xaeroworldmap.SupportXaeroMinimapMixin",
     "compat.xaeroworldmap.WaypointReaderMixin",
-    "compat.xaeroworldmap.WaypointMixin"
+    "compat.xaeroworldmap.MinimapWaypointMixin",
+    "compat.xaeroworldmap.WaypointMixin",
+    "MinecraftServerAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

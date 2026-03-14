@@ -5,10 +5,10 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import xaero.map.mods.gui.Waypoint;
+import xaero.common.minimap.waypoints.Waypoint;
 
 @Mixin(Waypoint.class)
-public class WaypointMixin implements CustomWaypointDataHolder {
+public class MinimapWaypointMixin implements CustomWaypointDataHolder {
 
     @Unique
     private @Nullable UUID xmxw$waystoneId;

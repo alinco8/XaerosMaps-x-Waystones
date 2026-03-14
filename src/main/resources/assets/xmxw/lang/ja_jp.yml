@@ -35,3 +35,11 @@ xmxw:
           visibility:
             name: "可視性"
             description: "ウェイポイントの可視性を選択。"
+      worldData:
+        name: "ワールドデータ"
+        groups:
+          _waystonePoint:
+            options:
+              hide:
+                name: "非表示"
+                description: "ウェイストーンポイントを非表示にするかどうか。"

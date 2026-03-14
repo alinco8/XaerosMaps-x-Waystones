@@ -72,8 +72,11 @@ class NeoForgeEntrypointClient(val modContainer: ModContainer) {
             level.dimension().loc()
         )
     }
+    
     @SubscribeEvent
     fun onClientWorldChange(event: ClientPlayerNetworkEvent.LoggingIn) {
+        XMXWClient.onJoinWorld()
+
         XMXWClient.onDimensionChange(
             event.player.level().dimension().loc(),
         )
@@ -88,6 +91,11 @@ class NeoForgeEntrypointClient(val modContainer: ModContainer) {
                 )
             )
         }
+    }
+
+    @SubscribeEvent
+    fun onLeaveWorld(event: ClientPlayerNetworkEvent.LoggingOut) {
+        XMXWClient.onLeaveWorld()
     }
 }
 //? }

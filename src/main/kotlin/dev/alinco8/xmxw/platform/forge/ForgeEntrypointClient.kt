@@ -53,8 +53,11 @@ class ForgeEntrypointClient {
             level.dimension().loc()
         )
     }
+
     @SubscribeEvent
     fun onClientWorldChange(event: PlayerEvent.PlayerLoggedInEvent) {
+        XMXWClient.onJoinWorld()
+
         XMXWClient.onDimensionChange(
             event.entity.level().dimension().loc()
         )
@@ -69,6 +72,10 @@ class ForgeEntrypointClient {
                 )
             )
         }
+    }
+    @SubscribeEvent
+    fun onLeaveWorld(_event: PlayerEvent.PlayerLoggedOutEvent) {
+        XMXWClient.onLeaveWorld()
     }
 }
 *///? }
