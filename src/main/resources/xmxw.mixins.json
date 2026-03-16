@@ -1,6 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
+  "refmap": "xmxw.refmap.json",
   "package": "dev.alinco8.xmxw.mixin",
   "plugin": "dev.alinco8.xmxw.mixin.MixinPlugin",
   "compatibilityLevel": "JAVA_17",

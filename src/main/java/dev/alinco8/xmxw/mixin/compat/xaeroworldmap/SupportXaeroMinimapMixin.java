@@ -22,7 +22,7 @@ import xaero.map.mods.gui.Waypoint;
 import xaero.common.minimap.waypoints.WaypointSet;
     //? }
 
-@Mixin(SupportXaeroMinimap.class)
+@Mixin(value = SupportXaeroMinimap.class, remap = false)
 abstract
 class SupportXaeroMinimapMixin {
 

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import xaero.map.mods.gui.Waypoint;
 
-@Mixin(Waypoint.class)
+@Mixin(value = Waypoint.class, remap = false)
 public class WaypointMixin implements CustomWaypointDataHolder {
 
     @Unique

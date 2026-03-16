@@ -20,7 +20,7 @@ import xaero.map.mods.SupportMods;
 import xaero.map.mods.gui.Waypoint;
 import xaero.map.mods.gui.WaypointReader;
 
-@Mixin(WaypointReader.class)
+@Mixin(value = WaypointReader.class, remap = false)
 class WaypointReaderMixin {
 
     @Inject(

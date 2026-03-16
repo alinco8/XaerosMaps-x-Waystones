@@ -37,6 +37,8 @@ repositories {
 dependencies {
     modImplementation("thedarkcolour:kotlinforforge:${prop("deps.kff")}")
     modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}")
+    
+    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 }
 
 legacyForge {
@@ -66,6 +68,10 @@ legacyForge {
             sourceSet(sourceSets["main"])
         }
     }
+}
+
+mixin {
+    add(sourceSets.main.get(), "xmxw.refmap.json")
 }
 
 val reobfJar = tasks.named<AbstractArchiveTask>("reobfJar")

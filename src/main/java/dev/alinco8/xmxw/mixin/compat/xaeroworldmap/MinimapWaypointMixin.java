@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import xaero.common.minimap.waypoints.Waypoint;
 
-@Mixin(Waypoint.class)
+@Mixin(value = Waypoint.class, remap = false)
 public class MinimapWaypointMixin implements CustomWaypointDataHolder {
 
     @Unique
