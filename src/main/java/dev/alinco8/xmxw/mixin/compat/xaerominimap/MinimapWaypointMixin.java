@@ -1,4 +1,4 @@
-package dev.alinco8.xmxw.mixin.compat.xaeroworldmap;
+package dev.alinco8.xmxw.mixin.compat.xaerominimap;
 
 import dev.alinco8.xmxw.api.CustomWaypointDataHolder;
 import java.util.UUID;
