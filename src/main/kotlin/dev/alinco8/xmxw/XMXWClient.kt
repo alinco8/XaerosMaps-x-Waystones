@@ -190,6 +190,19 @@ object XMXWClient {
     }
 
     fun onLeaveWorld() {
+        val existingIds = waystones.values
+            .flatten()
+            .map { it.id }
+            .toSet()
+        val idsToRemove = worldData?.waystonePoints?.values
+            ?.filter { it.waystoneId !in existingIds }
+            ?.map { it.waystoneId }
+            .orEmpty()
+        idsToRemove.forEach { id ->
+            LOGGER.debug("Waystone with id {} not found, removing waypoint", id)
+            worldData?.waystonePoints?.remove(id)
+        }
+
         worldData?.save()
         worldData = null
     }
@@ -245,19 +258,6 @@ object XMXWClient {
                         waystone.name,
                     )
                 )
-            }
-
-            val existingIds = waystones.values
-                .flatten()
-                .map { it.id }
-                .toSet()
-            val idsToRemove = worldData?.waystonePoints?.values
-                ?.filter { it.waystoneId !in existingIds }
-                ?.map { it.waystoneId }
-                .orEmpty()
-            idsToRemove.forEach { id ->
-                LOGGER.debug("Waystone with id {} not found, removing waypoint", id)
-                worldData?.waystonePoints?.remove(id)
             }
         }
     }
