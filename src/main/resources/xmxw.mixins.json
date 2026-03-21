@@ -10,6 +10,7 @@
   "client": [
     "compat.xaeroworldmap.SupportXaeroMinimapMixin",
     "compat.xaeroworldmap.WaypointReaderMixin",
+    "compat.xaeroworldmap.MapWorldMixin",
     "compat.xaerominimap.MinimapWaypointMixin",
     "compat.xaeroworldmap.WaypointMixin",
     "MinecraftServerAccessor"

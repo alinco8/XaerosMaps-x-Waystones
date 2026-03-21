@@ -24,6 +24,7 @@ import net.minecraft.ChatFormatting
 import net.minecraft.client.Minecraft
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
+import net.minecraft.world.level.Level
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import xaero.common.minimap.waypoints.Waypoint
@@ -80,6 +81,7 @@ object XMXWClient {
         get() = BuiltInHudModules.MINIMAP?.currentSession
             ?.worldManager?.getCustomWaypoints(loc("waypoints"))
     var worldData: XMXWWorldData? = null
+    var customDimension: ResourceLocation? = null
 
     data class WaystoneData(
         val x: Int,
@@ -205,9 +207,17 @@ object XMXWClient {
 
         worldData?.save()
         worldData = null
+        customDimension = null
+    }
+
+    fun onCustomDimensionChanged(dimension: ResourceKey<Level>?) {
+        customDimension = dimension?.loc();
+        updateWaystoneWaypoints(Minecraft.getInstance().level?.dimension()?.loc() ?: return)
     }
 
     fun updateWaystoneWaypoints(dimKey: ResourceLocation) {
+        val dimKey = customDimension ?: dimKey
+
         LOGGER.debug("Updating waypoints for dimension {}", dimKey)
 
         waypoints?.let { waypoints ->
