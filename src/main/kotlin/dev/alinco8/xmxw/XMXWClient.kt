@@ -38,6 +38,7 @@ object XMXWClient {
 
     val replacers = mapOf<String, (WaystoneData) -> String>(
         "name" to { it.name },
+        "name|first_letter" to { it.name.firstOrNull()?.toString() ?: "" },
     )
 
     @JvmStatic
@@ -158,7 +159,7 @@ object XMXWClient {
 
         for (waystonesList in waystones.values) {
             waystonesList.removeIf {
-                it.type == event.waystone.waystoneUid
+                it.id == event.waystone.waystoneUid
             }
         }
         waystones.values.removeIf { it.isEmpty() }
@@ -178,6 +179,8 @@ object XMXWClient {
         )
         val dimKey = waystone.dimension.loc()
         waystones.computeIfAbsent(dimKey) { mutableListOf() }.add(waystoneData)
+
+        updateWaystoneWaypoints(Minecraft.getInstance().level?.dimension()?.loc() ?: return)
     }
 
     fun onDimensionChange(dimKey: ResourceLocation) {
@@ -188,7 +191,6 @@ object XMXWClient {
 
     fun onJoinWorld() {
         worldData = XMXWWorldData.loadFromCurrentWorld()
-        LOGGER.debug("worldData: {}", com.google.gson.Gson().toJson(worldData))
     }
 
     fun onLeaveWorld() {
@@ -241,6 +243,11 @@ object XMXWClient {
                     WaypointColor.GRAY
                 }
 
+                var waypointTitle = config.waypointTitle
+                for ((key, replacer) in replacers.entries) {
+                    waypointTitle = waypointTitle.replace("{$key}", replacer(waystone))
+                }
+
                 if (worldData?.waystonePoints?.get(waystone.id)?.hidden == true) {
                     LOGGER.debug("Waypoint {} is hidden in world data, skipping", waypointName)
                     return@forEachIndexed
@@ -250,12 +257,7 @@ object XMXWClient {
                     waystone.y + config.waypointOffsetY,
                     waystone.z + config.waypointOffsetZ,
                     waypointName,
-                    config.waypointTitle
-                        .replace("{name}", waypointName)
-                        .replace(
-                            "{name|first_letter}",
-                            waypointName.firstOrNull()?.toString() ?: ""
-                        ),
+                    waypointTitle,
                     waypointColor,
                 )
                 waypoint.visibility = config.waypointVisibility

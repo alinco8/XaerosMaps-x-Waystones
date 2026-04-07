@@ -91,7 +91,7 @@ internal object UpdateChecker {
         }
 
         fun build(): URI {
-            assert(url != null) { "URL must be set before building URI" }
+            check(url != null) { "URL must be set" }
 
             val queryString =
                 queries.entries.joinToString("&", "?") {

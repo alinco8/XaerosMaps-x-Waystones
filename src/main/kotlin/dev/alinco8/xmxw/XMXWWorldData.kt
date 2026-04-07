@@ -1,14 +1,8 @@
 package dev.alinco8.xmxw
 
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonObject
-import com.google.gson.JsonSerializer
 import dev.alinco8.xmxw.XMXWClient.LOGGER
 import dev.alinco8.xmxw.mixin.MinecraftServerAccessor
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import java.io.File
 import java.util.UUID
 import net.minecraft.client.Minecraft
@@ -26,31 +20,7 @@ data class XMXWWorldData(
     )
 
     companion object {
-        val gson: Gson = GsonBuilder()
-            .registerTypeAdapter(
-                Int2ObjectMap::class.java,
-                JsonDeserializer { json, _, context ->
-                    val map = Int2ObjectOpenHashMap<WaystonePoint>()
-                    val obj = json.asJsonObject
-                    obj.entrySet().forEach { (key, value) ->
-                        map.put(
-                            key.toInt(),
-                            context.deserialize(value, WaystonePoint::class.java)
-                        )
-                    }
-                    map
-                })
-            .registerTypeAdapter(
-                Int2ObjectMap::class.java,
-                JsonSerializer<Int2ObjectMap<*>> { src, _, context ->
-                    // 書き出しは通常のJsonObjectとして
-                    val obj = JsonObject()
-                    src.forEach { (k, v) ->
-                        obj.add(k.toString(), context.serialize(v))
-                    }
-                    obj
-                })
-            .create()
+        val gson: Gson = Gson()
 
         fun currentDataFile(): File? {
             val worldId = Minecraft.getInstance().run {
@@ -67,8 +37,9 @@ data class XMXWWorldData(
             val dataFile = currentDataFile() ?: error("data file not available")
             val data = if (dataFile.exists()) {
                 try {
-                    LOGGER.debug("Reading data: {}", dataFile.reader().readText())
-                    gson.fromJson(dataFile.reader(), XMXWWorldData::class.java)
+                    dataFile.bufferedReader().use { reader ->
+                        gson.fromJson(reader, XMXWWorldData::class.java)
+                    }
                 } catch (e: Exception) {
                     LOGGER.error("Failed to load world specific data, creating new one", e)
                     XMXWWorldData()
