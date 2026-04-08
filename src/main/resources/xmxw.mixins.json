@@ -12,6 +12,7 @@
     "compat.xaeroworldmap.WaypointReaderMixin",
     "compat.xaeroworldmap.MapWorldMixin",
     "compat.xaerominimap.MinimapWaypointMixin",
+    "compat.xaerominimap.MinimapDimensionHelperMixin",
     "compat.xaeroworldmap.WaypointMixin",
     "MinecraftServerAccessor"
   ],

@@ -46,11 +46,11 @@ class SupportXaeroMinimapMixin {
     ) {
         if (this.waypointSet == null) {return new ArrayList<>();}
 
-        return xmxw$getCustomWaypoints(dimDiv);
+        return xmxw$getCustomWaypoints();
     }
 
     @Unique
-    public ArrayList<Waypoint> xmxw$getCustomWaypoints(double dimDiv) {
+    public ArrayList<Waypoint> xmxw$getCustomWaypoints() {
         ArrayList<Waypoint> result = new ArrayList<>();
 
         Iterable<xaero.common.minimap.waypoints.Waypoint> list = BuiltInHudModules.MINIMAP.getCurrentSession()
@@ -64,7 +64,7 @@ class SupportXaeroMinimapMixin {
         for (xaero.common.minimap.waypoints.Waypoint w : list) {
             if (showingDisabled || !w.isDisabled()) {
                 var waypoint = this.convertWaypoint(w, true, "Custom Waypoints",
-                    dimDiv);
+                    1);
                 ((CustomWaypointDataHolder) waypoint).xmxw$setWaystoneId(
                     ((CustomWaypointDataHolder) w).xmxw$getWaystoneId()
                 );
