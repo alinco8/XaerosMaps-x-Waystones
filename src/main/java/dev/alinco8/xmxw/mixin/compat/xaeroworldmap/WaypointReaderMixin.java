@@ -3,6 +3,7 @@ package dev.alinco8.xmxw.mixin.compat.xaeroworldmap;
 import dev.alinco8.xmxw.XMXWClient;
 import dev.alinco8.xmxw.XMXWWorldData;
 import dev.alinco8.xmxw.api.CustomWaypointDataHolder;
+import dev.alinco8.xmxw.helpers.TeleportMixinHelper;
 import java.util.ArrayList;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
@@ -57,7 +58,17 @@ class WaypointReaderMixin {
         rightClickOptions.add((new RightClickOption("gui.xaero_right_click_waypoint_teleport",
             rightClickOptions.size(), target) {
             public void onAction(Screen screen) {
-                SupportMods.xaeroMinimap.teleportToWaypoint(screen, element);
+                var customDimensionId = XMXWClient.INSTANCE.getCustomDimension();
+                if (customDimensionId != null) {
+                    TeleportMixinHelper.INSTANCE.setDimensionId(customDimensionId);
+                }
+
+                try {
+                    SupportMods.xaeroMinimap.teleportToWaypoint(screen, element);
+                } finally {
+                    TeleportMixinHelper.INSTANCE.setDimensionId(null);
+                }
+
             }
 
             public boolean isActive() {

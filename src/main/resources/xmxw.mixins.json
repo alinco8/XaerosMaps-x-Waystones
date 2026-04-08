@@ -13,6 +13,7 @@
     "compat.xaeroworldmap.MapWorldMixin",
     "compat.xaerominimap.MinimapWaypointMixin",
     "compat.xaerominimap.MinimapDimensionHelperMixin",
+    "compat.xaerominimap.WaypointTeleportMixin",
     "compat.xaeroworldmap.WaypointMixin",
     "MinecraftServerAccessor"
   ],
