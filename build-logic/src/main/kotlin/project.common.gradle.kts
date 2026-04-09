@@ -7,6 +7,7 @@ import buildlogic.strictMaven
 
 plugins {
     kotlin("jvm")
+    id("com.google.devtools.ksp")
     id("me.modmuss50.mod-publish-plugin")
     id("dev.kikugie.fletching-table")
 }
@@ -34,6 +35,12 @@ fletchingTable {
     lang.all {
         sortKeys = true
         prettyPrint = true
+    }
+
+    mixins.create("main") {
+        mixin("default", "xmxw.mixins.json") {
+            env("CLIENT")
+        }
     }
 }
 
