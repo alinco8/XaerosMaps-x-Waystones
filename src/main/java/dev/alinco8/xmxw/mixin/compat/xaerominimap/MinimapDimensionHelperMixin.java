@@ -23,12 +23,11 @@ public class MinimapDimensionHelperMixin {
     private void getDimCoordinateScale(MinimapWorld minimapWorld,
         CallbackInfoReturnable<Double> cir
     ) {
-        var dimId = XMXWClient.INSTANCE.getCustomDimension();
-        if (dimId != null) {
+        if (XMXWClient.customDimension != null) {
             cir.cancel();
 
             ResourceKey<Level> dimKey = ResourceKey.create(Registries.DIMENSION,
-                XMXWClient.INSTANCE.getCustomDimension());
+                XMXWClient.customDimension);
             MinimapWorldRootContainer rootContainer = minimapWorld.getContainer().getRoot();
 
             cir.setReturnValue(

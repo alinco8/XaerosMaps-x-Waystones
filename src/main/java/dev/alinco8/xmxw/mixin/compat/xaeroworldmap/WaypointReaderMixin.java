@@ -1,9 +1,7 @@
 package dev.alinco8.xmxw.mixin.compat.xaeroworldmap;
 
 import dev.alinco8.xmxw.XMXWClient;
-import dev.alinco8.xmxw.XMXWWorldData;
 import dev.alinco8.xmxw.api.CustomWaypointDataHolder;
-import dev.alinco8.xmxw.helpers.TeleportMixinHelper;
 import java.util.ArrayList;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
@@ -58,17 +56,7 @@ class WaypointReaderMixin {
         rightClickOptions.add((new RightClickOption("gui.xaero_right_click_waypoint_teleport",
             rightClickOptions.size(), target) {
             public void onAction(Screen screen) {
-                var customDimensionId = XMXWClient.INSTANCE.getCustomDimension();
-                if (customDimensionId != null) {
-                    TeleportMixinHelper.INSTANCE.setDimensionId(customDimensionId);
-                }
-
-                try {
-                    SupportMods.xaeroMinimap.teleportToWaypoint(screen, element);
-                } finally {
-                    TeleportMixinHelper.INSTANCE.setDimensionId(null);
-                }
-
+                SupportMods.xaeroMinimap.teleportToWaypoint(screen, element);
             }
 
             public boolean isActive() {
@@ -87,13 +75,12 @@ class WaypointReaderMixin {
         rightClickOptions.add(
             new RightClickOption("Hide waypoint", rightClickOptions.size(), target) {
                 public void onAction(Screen screen) {
-                    XMXWWorldData worldData = XMXWClient.INSTANCE.getWorldData();
-                    if (worldData == null) {
+                    if (XMXWClient.worldData == null) {
                         XMXWClient.LOGGER.warn("No world data found");
                         return;
                     }
 
-                    var w = worldData.getWaystonePoints().get(waystoneId);
+                    var w = XMXWClient.worldData.getWaystonePoints().get(waystoneId);
                     if (w == null) {
                         XMXWClient.LOGGER.warn("No waystone found: {}", waystoneId);
                         return;

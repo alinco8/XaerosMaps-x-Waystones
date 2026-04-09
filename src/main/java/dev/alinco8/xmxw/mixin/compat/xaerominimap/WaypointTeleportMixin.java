@@ -1,7 +1,6 @@
 package dev.alinco8.xmxw.mixin.compat.xaerominimap;
 
 import dev.alinco8.xmxw.XMXWClient;
-import dev.alinco8.xmxw.helpers.TeleportMixinHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -20,8 +19,8 @@ public class WaypointTeleportMixin {
         require = 1
     )
     private String injectDimensionId(String fullCommand) {
-        var dimId = TeleportMixinHelper.INSTANCE.getDimensionId();
-        return dimId != null ? "/execute in " + dimId + " run " : "";
+        return XMXWClient.customDimension != null ?
+            "/execute in " + XMXWClient.customDimension + " run " : "";
     }
 
     @Redirect(
@@ -34,7 +33,7 @@ public class WaypointTeleportMixin {
     private double injectDimDiv(MinimapDimensionHelper instance,
         MinimapWorld minimapWorld
     ) {
-        return XMXWClient.INSTANCE.getCustomDimension() == null ? instance.getDimensionDivision(
+        return XMXWClient.customDimension == null ? instance.getDimensionDivision(
             minimapWorld) : 1;
     }
 }

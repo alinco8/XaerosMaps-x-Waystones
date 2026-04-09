@@ -77,11 +77,14 @@ object XMXWClient {
         //? }
     }
 
-    val waystones = mutableMapOf<ResourceLocation, MutableList<WaystoneData>>()
     val waypoints: Int2ObjectMap<Waypoint>?
         get() = BuiltInHudModules.MINIMAP?.currentSession
             ?.worldManager?.getCustomWaypoints(loc("waypoints"))
+    @JvmField
+    val waystones = mutableMapOf<ResourceLocation, MutableList<WaystoneData>>()
+    @JvmField
     var worldData: XMXWWorldData? = null
+    @JvmField
     var customDimension: ResourceLocation? = null
 
     data class WaystoneData(
