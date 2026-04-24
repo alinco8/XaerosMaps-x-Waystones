@@ -1,4 +1,4 @@
-package dev.alinco8.xmxw.mixin.compat.xaeroworldmap;
+package dev.alinco8.xmxw.mixin.compat.xaerominimap;
 
 import dev.alinco8.xmxw.XMXWClient;
 import dev.alinco8.xmxw.XMXWToasts;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xaero.map.mods.gui.Waypoint;
+import xaero.common.minimap.waypoints.Waypoint;
 
 @Mixin(value = Waypoint.class, remap = false)
 public abstract class WaypointMixin implements ModdableWaypoint {
@@ -33,7 +33,10 @@ public abstract class WaypointMixin implements ModdableWaypoint {
     }
 
     @Inject(
-        method = {"setDisabled", "setTemporary", "setGlobal"},
+        method = {"setTemporary", "setDisabled", "setName", "setInitials", "setPurpose",
+            "setRotation", "setVisibility", "setWaypointColor", "setX", "setY", "setYaw",
+            "setYIncluded", "setZ", "setColor", "setOneoffDestination", "setSymbol", "setType",
+            "setVisibilityType"},
         at = @At("HEAD"),
         cancellable = true
     )

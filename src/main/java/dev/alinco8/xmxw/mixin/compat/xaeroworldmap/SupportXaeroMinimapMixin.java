@@ -1,78 +1,50 @@
 package dev.alinco8.xmxw.mixin.compat.xaeroworldmap;
 
-import dev.alinco8.xmxw.api.CustomWaypointDataHolder;
-import java.util.ArrayList;
+import com.llamalad7.mixinextras.sugar.Local;
+import dev.alinco8.xmxw.api.ModdableWaypoint;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import xaero.hud.minimap.BuiltInHudModules;
-import xaero.lib.client.config.ClientConfigManager;
-import xaero.lib.common.config.Config;
-import xaero.lib.common.config.single.SingleConfigManager;
-import xaero.map.WorldMap;
-import xaero.map.config.primary.option.WorldMapPrimaryClientConfigOptions;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xaero.map.mods.SupportXaeroMinimap;
 import xaero.map.mods.gui.Waypoint;
 
 //? if >=1.21.6 {
 /*import xaero.hud.minimap.waypoint.set.WaypointSet;
  *///? } else {
-import xaero.common.minimap.waypoints.WaypointSet;
+
     //? }
 
 @Mixin(value = SupportXaeroMinimap.class, remap = false)
 abstract
 class SupportXaeroMinimapMixin {
 
-    @Shadow
-    private WaypointSet waypointSet;
-
-    @Shadow
-    public abstract Waypoint convertWaypoint(xaero.common.minimap.waypoints.Waypoint w,
-        boolean editable, String setName, double dimDiv
-    );
-
-    @Redirect(
-        method = "convertWaypoints",
-        at = @At(
-            value = "NEW",
-            target = "java/util/ArrayList"
-        )
+    @ModifyVariable(
+        method = "convertWaypoint",
+        at = @At("HEAD"),
+        argsOnly = true,
+        index = 4
     )
-    public ArrayList<Waypoint> convertWaypoints(
-        double dimDiv
+    private double modifyDimDiv(double dimDiv,
+        @Local(argsOnly = true, ordinal = 0) xaero.common.minimap.waypoints.Waypoint w
     ) {
-        if (this.waypointSet == null) {return new ArrayList<>();}
-
-        return xmxw$getCustomWaypoints();
+        return ((ModdableWaypoint) w).xmxw$getWaystoneId() != null ? 1.0 : dimDiv;
     }
 
-    @Unique
-    public ArrayList<Waypoint> xmxw$getCustomWaypoints() {
-        ArrayList<Waypoint> result = new ArrayList<>();
+    @Inject(
+        method = "convertWaypoint",
+        at = @At(
+            value = "RETURN"
+        )
+    )
+    private void setWaystoneIdToWaypoint(xaero.common.minimap.waypoints.Waypoint w,
+        boolean editable,
+        String setName, double dimDiv, CallbackInfoReturnable<Waypoint> cir
+    ) {
+        var waystoneId = ((ModdableWaypoint) w).xmxw$getWaystoneId();
+        if (waystoneId == null) {return;}
 
-        Iterable<xaero.common.minimap.waypoints.Waypoint> list = BuiltInHudModules.MINIMAP.getCurrentSession()
-            .getWorldManager()
-            .getCustomWaypoints();
-        ClientConfigManager configManager = WorldMap.INSTANCE.getConfigs().getClientConfigManager();
-        SingleConfigManager<Config> primaryConfigManager = configManager.getPrimaryConfigManager();
-        boolean showingDisabled = primaryConfigManager.getEffective(
-            WorldMapPrimaryClientConfigOptions.DISPLAY_DISABLED_WAYPOINTS);
-
-        for (xaero.common.minimap.waypoints.Waypoint w : list) {
-            if (showingDisabled || !w.isDisabled()) {
-                var waypoint = this.convertWaypoint(w, true, "Custom Waypoints",
-                    1);
-                ((CustomWaypointDataHolder) waypoint).xmxw$setWaystoneId(
-                    ((CustomWaypointDataHolder) w).xmxw$getWaystoneId()
-                );
-
-                result.add(waypoint);
-            }
-        }
-
-        return result;
+        ((ModdableWaypoint) cir.getReturnValue()).xmxw$setWaystoneId(waystoneId);
     }
 }

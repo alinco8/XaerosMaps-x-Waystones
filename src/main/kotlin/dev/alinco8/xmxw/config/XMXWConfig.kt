@@ -62,4 +62,7 @@ class XMXWConfig {
 
     @SerialEntry
     var disableUpdateCheck = false
+
+    @SerialEntry
+    var warnOnAllSetsDisabled = true
 }

@@ -9,6 +9,7 @@
 - If you see "YACL is not installed" despite having it installed, try downgrading YACL
 - Please report bugs on [GitHub Issues](https://github.com/alinco8/XaerosMaps-x-Waystones/issues)
   rather than the CurseForge comments 🙏
+- If waypoints are not visible, enable "Render All Waypoint Sets" in Xaero's Minimap settings
 
 ## 🗺️ Overview
 

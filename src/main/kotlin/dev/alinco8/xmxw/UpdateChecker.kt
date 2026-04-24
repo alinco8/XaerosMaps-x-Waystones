@@ -50,7 +50,6 @@ internal object UpdateChecker {
                 client.send(request, HttpResponse.BodyHandlers.ofString())
             val body = response.body()
             val json = gson.fromJson(body, Array::class.java)
-            LOGGER.debug("Modrinth version check response: $body")
 
             return json.firstOrNull()?.let {
                 gson.toJsonTree(it).asJsonObject.get("version_number").asString
@@ -61,19 +60,18 @@ internal object UpdateChecker {
         }
     }
 
-    fun checkUpdate(currentVersion: String): String? {
-        if (XMXWConfig.HANDLER.instance().disableUpdateCheck) return null
+    fun checkUpdate(currentVersion: String, onFound: (String) -> Unit) {
+        if (XMXWConfig.HANDLER.instance().disableUpdateCheck) return
 
         fetchLatestVersion()?.let { latestVersion ->
             if (currentVersion != latestVersion) {
                 LOGGER.info("New version available: $latestVersion (current: $currentVersion)")
-                return latestVersion
+                onFound(latestVersion)
+                return
             }
         }
 
         LOGGER.debug("No new version available (current: $currentVersion)")
-
-        return null
     }
 
     class URIBuilder {

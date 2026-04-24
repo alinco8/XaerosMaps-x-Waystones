@@ -3,11 +3,11 @@
 
 import dev.alinco8.xmxw.UpdateChecker
 import dev.alinco8.xmxw.XMXWClient
+import dev.alinco8.xmxw.XMXWToasts
 import dev.alinco8.xmxw.config.ConfigScreen
 import dev.alinco8.xmxw.loc
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ClientLevel
-import net.minecraft.network.chat.Component
 import net.minecraftforge.client.ConfigScreenHandler
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.common.MinecraftForge
@@ -63,13 +63,10 @@ class ForgeEntrypointClient {
         )
 
         val currentVersion = modContainer.modInfo.version.toString()
-        UpdateChecker.checkUpdate(currentVersion)?.let {
-            XMXWClient.displayMessage(
-                Component.translatable(
-                    "xmxw.messages.mod_update_available",
-                    it,
-                    currentVersion,
-                )
+        UpdateChecker.checkUpdate(currentVersion) { nextVersion ->
+            XMXWToasts.updateAvailable(
+                nextVersion.substringBefore('+'),
+                currentVersion.substringBefore('+'),
             )
         }
     }

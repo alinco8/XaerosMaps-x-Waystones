@@ -1,10 +1,13 @@
 package dev.alinco8.xmxw.mixin.compat.xaerominimap;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.alinco8.xmxw.XMXWClient;
+import dev.alinco8.xmxw.api.ModdableWaypoint;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import xaero.common.minimap.waypoints.Waypoint;
 import xaero.hud.minimap.waypoint.WaypointTeleport;
 import xaero.hud.minimap.world.MinimapDimensionHelper;
 import xaero.hud.minimap.world.MinimapWorld;
@@ -30,10 +33,10 @@ public class WaypointTeleportMixin {
             target = "Lxaero/hud/minimap/world/MinimapDimensionHelper;getDimensionDivision(Lxaero/hud/minimap/world/MinimapWorld;)D"
         )
     )
-    private double injectDimDiv(MinimapDimensionHelper instance,
-        MinimapWorld minimapWorld
+    private double modifyDimDiv(MinimapDimensionHelper instance, MinimapWorld minimapWorld,
+        @Local(name = "waypoint") Waypoint waypoint
     ) {
-        return XMXWClient.customDimension == null ? instance.getDimensionDivision(
-            minimapWorld) : 1;
+        return ((ModdableWaypoint) waypoint).xmxw$getWaystoneId() != null
+            ? 1.0 : instance.getDimensionDivision(minimapWorld);
     }
 }

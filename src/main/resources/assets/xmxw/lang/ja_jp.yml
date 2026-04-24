@@ -1,7 +1,9 @@
 xmxw:
-  messages:
-    mod_update_available: "新バージョン %s が利用可能です! 現在のバージョンは %s です"
-    custom_waypoint_uneditable: "Modによって作成されたウェイポイントは編集できません！"
+  toast:
+    modded_waypoint_set_not_editable: "MOD管理のウェイポイントセットは編集できません！ 選択中のウェイポイントセットを切り替えることで直る場合があります。"
+    modded_waypoint_not_editable: "MOD管理のウェイポイントは編集できません！ 選択中のウェイポイントセットを切り替えることで直る場合があります。"
+    update_available: "新バージョン %s が利用可能です! 現在のバージョンは %s です"
+    all_sets_disabled: "Xaero's MinimapのRender All Waypoint Setsオプションが無効になっています！ ウェイポイントが正しく表示されない可能性があります。"
   config:
     title: "XMXWの設定"
     categories:
@@ -38,6 +40,9 @@ xmxw:
           visibility:
             name: "可視性"
             description: "ウェイポイントの可視性を選択。"
+          warnOnAllSetsDisabled:
+            name: "Render All Waypoint Setsが無効な場合に警告"
+            description: "Render All Waypoint Setsが無効な場合に警告を表示するかどうか。"
       worldData:
         name: "ワールドデータ"
         groups:

@@ -3,13 +3,13 @@
 
 import dev.alinco8.xmxw.UpdateChecker
 import dev.alinco8.xmxw.XMXWClient
+import dev.alinco8.xmxw.XMXWToasts
 import dev.alinco8.xmxw.loc
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.multiplayer.ClientLevel
-import net.minecraft.network.chat.Component
 
 class FabricEntrypointClient : ClientModInitializer {
     private var lastWorld: ClientLevel? = null
@@ -28,15 +28,11 @@ class FabricEntrypointClient : ClientModInitializer {
             )
 
             val currentVersion = modContainer.metadata.version.friendlyString
-            UpdateChecker.checkUpdate(currentVersion)?.let {
-                XMXWClient.displayMessage(
-                    Component.translatable(
-                        "xmxw.messages.mod_update_available",
-                        it,
-                        currentVersion,
-                    )
+            UpdateChecker.checkUpdate(currentVersion) { nextVersion ->
+                XMXWToasts.updateAvailable(
+                    nextVersion.substringBefore('+'),
+                    currentVersion.substringBefore('+'),
                 )
-
             }
         }
         ClientPlayConnectionEvents.DISCONNECT.register { _, _ ->

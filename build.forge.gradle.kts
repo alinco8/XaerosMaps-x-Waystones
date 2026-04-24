@@ -37,8 +37,10 @@ repositories {
 dependencies {
     modImplementation("thedarkcolour:kotlinforforge:${prop("deps.kff")}")
     modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}")
-    
+
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5")
+    compileOnly("io.github.llamalad7:mixinextras-common:0.3.5")
 }
 
 legacyForge {

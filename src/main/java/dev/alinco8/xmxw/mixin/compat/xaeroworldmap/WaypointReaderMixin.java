@@ -1,14 +1,13 @@
 package dev.alinco8.xmxw.mixin.compat.xaeroworldmap;
 
 import dev.alinco8.xmxw.XMXWClient;
-import dev.alinco8.xmxw.api.CustomWaypointDataHolder;
+import dev.alinco8.xmxw.XMXWToasts;
+import dev.alinco8.xmxw.api.ModdableWaypoint;
 import java.util.ArrayList;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -30,7 +29,7 @@ class WaypointReaderMixin {
     private void getRightInjectRightClickOptions(Waypoint element, IRightClickableElement target,
         CallbackInfoReturnable<ArrayList<RightClickOption>> cir
     ) {
-        UUID waystoneId = ((CustomWaypointDataHolder) element).xmxw$getWaystoneId();
+        UUID waystoneId = ((ModdableWaypoint) element).xmxw$getWaystoneId();
         if (waystoneId == null) {return;}
         cir.cancel();
 
@@ -39,7 +38,7 @@ class WaypointReaderMixin {
         rightClickOptions.add(
             new RightClickOption(element.getName(), 0, target) {
                 public void onAction(Screen screen) {
-                    xmxw$displayUneditableMessage();
+                    XMXWToasts.moddedWaypointNotEditable();
                 }
             });
 
@@ -49,7 +48,7 @@ class WaypointReaderMixin {
                     element.getZ()),
                 rightClickOptions.size(), target) {
                 public void onAction(Screen screen) {
-                    xmxw$displayUneditableMessage();
+                    XMXWToasts.moddedWaypointNotEditable();
                 }
             });
 
@@ -102,14 +101,5 @@ class WaypointReaderMixin {
             });
 
         cir.setReturnValue(rightClickOptions);
-    }
-
-    @Unique
-    private void xmxw$displayUneditableMessage() {
-        XMXWClient.displayMessage(
-            Component.translatable("xmxw.messages.custom_waypoint_uneditable"));
-        if (Minecraft.getInstance().player != null) {
-            Minecraft.getInstance().player.clientSideCloseContainer();
-        }
     }
 }

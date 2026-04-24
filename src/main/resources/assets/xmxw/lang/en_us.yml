@@ -1,7 +1,9 @@
 xmxw:
-  messages:
-    mod_update_available: "New version %s is available! You are using version %s"
-    custom_waypoint_uneditable: "Waypoints created by mods cannot be edited!"
+  toast:
+    modded_waypoint_set_not_editable: "MOD-managed waypoint sets cannot be edited! Changing the selected waypoint set may fix this."
+    modded_waypoint_not_editable: "MOD-managed waypoints cannot be edited! Changing the selected waypoint set may fix this."
+    update_available: "New version %s is available! You are using version %s"
+    all_sets_disabled: "Render All Waypoint Sets option of Xaero's Minimap is disabled! Waypoints may not render correctly."
   config:
     title: "XMXW Config"
     categories:
@@ -41,6 +43,9 @@ xmxw:
           visibility:
             name: "Visibility"
             description: "Set the visibility of the waypoint."
+          warnOnAllSetsDisabled:
+            name: "Warn on Render All Waypoint Sets Disabled"
+            description: "Show a warning when Render All Waypoint Sets is disabled."
       worldData:
         name: "World Data"
         groups:

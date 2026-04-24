@@ -16,19 +16,19 @@ import net.minecraft.resources.ResourceLocation
 import net.blay09.mods.balm.api.Balm
 //? }
 
-import dev.alinco8.xmxw.api.CustomWaypointDataHolder
+import dev.alinco8.xmxw.api.ModdableWaypoint
+import dev.alinco8.xmxw.api.ModdableWaypointSet
 import dev.alinco8.xmxw.config.XMXWConfig
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap
 import java.util.*
-import net.minecraft.ChatFormatting
 import net.minecraft.client.Minecraft
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.Level
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import xaero.common.HudMod
 import xaero.common.minimap.waypoints.Waypoint
 import xaero.hud.minimap.BuiltInHudModules
+import xaero.hud.minimap.common.config.option.MinimapProfiledConfigOptions
 import xaero.hud.minimap.waypoint.WaypointColor
 
 object XMXWClient {
@@ -50,17 +50,6 @@ object XMXWClient {
         *///? }
     }
 
-    @JvmStatic
-    fun displayMessage(vararg component: Component) {
-        val message = Component.empty()
-            .append(Component.literal("[XMXW] ").withStyle(ChatFormatting.GREEN))
-        for (part in component) {
-            message.append(part)
-        }
-
-        Minecraft.getInstance().player?.displayClientMessage(message, false)
-    }
-
     fun initialize() {
         LOGGER.debug("Initializing XMXW Client")
         XMXWConfig.HANDLER.load()
@@ -77,9 +66,7 @@ object XMXWClient {
         //? }
     }
 
-    val waypoints: Int2ObjectMap<Waypoint>?
-        get() = BuiltInHudModules.MINIMAP?.currentSession
-            ?.worldManager?.getCustomWaypoints(loc("waypoints"))
+    const val XMXW_WAYPOINT_SET_NAME = "Waystones (by XMXW)"
     @JvmField
     val waystones = mutableMapOf<ResourceLocation, MutableList<WaystoneData>>()
     @JvmField
@@ -95,6 +82,9 @@ object XMXWClient {
         val type: ResourceLocation,
         val id: UUID,
     )
+
+    fun getWaypoints() = BuiltInHudModules.MINIMAP?.currentSession?.worldManager
+        ?.currentWorld?.getWaypointSet(XMXW_WAYPOINT_SET_NAME) as? ModdableWaypointSet
 
     fun onWaystonesListReceived(event: WaystonesListReceivedEvent) {
         //? if <=1.20.1 {
@@ -215,6 +205,19 @@ object XMXWClient {
         customDimension = null
     }
 
+    @JvmStatic
+    fun onXaeroWorldChanged() {
+        val renderAllWaypointSetsEnabled = HudMod.INSTANCE
+            .hudConfigs
+            .clientConfigManager
+            .getEffective(MinimapProfiledConfigOptions.WAYPOINTS_ALL_SETS)
+        if (!renderAllWaypointSetsEnabled && XMXWConfig.HANDLER.instance().warnOnAllSetsDisabled) {
+            XMXWToasts.allSetsDisabled()
+        }
+
+        updateWaystoneWaypoints(Minecraft.getInstance().level?.dimension()?.loc() ?: return)
+    }
+
     fun onCustomDimensionChanged(dimension: ResourceKey<Level>?) {
         customDimension = dimension?.loc();
         updateWaystoneWaypoints(Minecraft.getInstance().level?.dimension()?.loc() ?: return)
@@ -225,12 +228,12 @@ object XMXWClient {
 
         LOGGER.debug("Updating waypoints for dimension {}", dimKey)
 
-        waypoints?.let { waypoints ->
-            waypoints.clear()
+        getWaypoints()?.let { waypoints ->
+            waypoints.`xmxw$clearUnchecked`()
 
             val config = XMXWConfig.HANDLER.instance()
 
-            waystones[dimKey]?.forEachIndexed { index, waystone ->
+            waystones[dimKey]?.forEach { waystone ->
                 var waypointName = config.waypointNameFormat
                 for ((key, replacer) in replacers.entries) {
                     waypointName = waypointName.replace("{$key}", replacer(waystone))
@@ -253,7 +256,7 @@ object XMXWClient {
 
                 if (worldData?.waystonePoints?.get(waystone.id)?.hidden == true) {
                     LOGGER.debug("Waypoint {} is hidden in world data, skipping", waypointName)
-                    return@forEachIndexed
+                    return@forEach
                 }
                 val waypoint = Waypoint(
                     waystone.x + config.waypointOffsetX,
@@ -264,14 +267,32 @@ object XMXWClient {
                     waypointColor,
                 )
                 waypoint.visibility = config.waypointVisibility
-                (waypoint as CustomWaypointDataHolder).`xmxw$setWaystoneId`(waystone.id)
-                waypoints[index] = waypoint
+                (waypoint as ModdableWaypoint).`xmxw$setWaystoneId`(waystone.id)
+                LOGGER.debug("Waystone id set to {} for waypoint {}", waystone.id, waypoint.name)
+                waypoints.`xmxw$addUnchecked`(waypoint)
                 worldData?.waystonePoints?.put(
                     waystone.id, XMXWWorldData.WaystonePoint(
                         waystone.id,
                         worldData?.waystonePoints?.get(waystone.id)?.hidden ?: false,
                         waystone.name,
                     )
+                )
+            }
+        } ?: run {
+            if (LOGGER.isDebugEnabled) {
+                val nullCandidates = mapOf(
+                    "minimap session" to BuiltInHudModules.MINIMAP?.currentSession,
+                    "world manager" to BuiltInHudModules.MINIMAP?.currentSession?.worldManager,
+                    "current world" to BuiltInHudModules.MINIMAP?.currentSession
+                        ?.worldManager?.currentWorld,
+                    "waypoint set" to BuiltInHudModules.MINIMAP?.currentSession
+                        ?.worldManager?.currentWorld?.getWaypointSet(XMXW_WAYPOINT_SET_NAME)
+                )
+
+                LOGGER.debug(
+                    "Cannot update waypoints for dimension {}, because {} is null",
+                    dimKey,
+                    nullCandidates.entries.firstOrNull { it.value == null }?.key ?: "unknown reason"
                 )
             }
         }

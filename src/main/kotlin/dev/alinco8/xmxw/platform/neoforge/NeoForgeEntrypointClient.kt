@@ -3,11 +3,11 @@ package dev.alinco8.xmxw.platform.neoforge
 
 import dev.alinco8.xmxw.UpdateChecker
 import dev.alinco8.xmxw.XMXWClient
+import dev.alinco8.xmxw.XMXWToasts
 import dev.alinco8.xmxw.config.ConfigScreen
 import dev.alinco8.xmxw.loc
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ClientLevel
-import net.minecraft.network.chat.Component
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
@@ -72,7 +72,7 @@ class NeoForgeEntrypointClient(val modContainer: ModContainer) {
             level.dimension().loc()
         )
     }
-    
+
     @SubscribeEvent
     fun onClientWorldChange(event: ClientPlayerNetworkEvent.LoggingIn) {
         XMXWClient.onJoinWorld()
@@ -82,13 +82,10 @@ class NeoForgeEntrypointClient(val modContainer: ModContainer) {
         )
 
         val currentVersion = modContainer.modInfo.version.toString()
-        UpdateChecker.checkUpdate(currentVersion)?.let {
-            XMXWClient.displayMessage(
-                Component.translatable(
-                    "xmxw.messages.mod_update_available",
-                    it,
-                    currentVersion,
-                )
+        UpdateChecker.checkUpdate(currentVersion) { nextVersion ->
+            XMXWToasts.updateAvailable(
+                nextVersion.substringBefore('+'),
+                currentVersion.substringBefore('+'),
             )
         }
     }

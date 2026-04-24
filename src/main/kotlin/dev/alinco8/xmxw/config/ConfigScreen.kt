@@ -40,6 +40,7 @@ object ConfigScreen {
             builder.title(t("title"))
             builder.save {
                 h.save()
+
                 val player = Minecraft.getInstance().player ?: return@save
                 XMXWClient.updateWaystoneWaypoints(player.level().dimension().loc())
             }
@@ -144,6 +145,13 @@ object ConfigScreen {
                                 .build()
                         )
                     }
+                }
+
+                option("warnOnAllSetsDisabled") {
+                    name(t("name"))
+                    builder.description(OptionDescription.of(t("description")))
+                    builder.bind(d::warnOnAllSetsDisabled, i::warnOnAllSetsDisabled)
+                    builder.controller(TickBoxControllerBuilder::create)
                 }
             }
 
