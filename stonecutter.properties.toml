@@ -2,7 +2,7 @@ loomx.loom_version = "1.16-SNAPSHOT"
 
 [mod]
 id = "xmxw"
-version = "2.9.0"
+version = "2.10.0"
 name = "Xaero's Maps x Waystones"
 group = "dev.alinco8"
 authors = "Alinco8"
