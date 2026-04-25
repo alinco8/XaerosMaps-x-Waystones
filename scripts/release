@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Requires: git, git-cliff, gum, gh, gradle
+# Requires: git, git-cliff, gum, gh, gradle, tomato
 set -euo pipefail
 
 fatal() {
@@ -10,12 +10,6 @@ info() {
   gum log -l info "$1"
 }
 
-need() {
-  for cmd in "$@"; do
-    command -v "$cmd" >/dev/null 2>&1 || fatal "Missing dependency: $cmd"
-  done
-}
-
 if_prod() {
   if [[ "${DRY_RUN:-}" == "false" ]]; then
     "$@"
@@ -23,87 +17,60 @@ if_prod() {
 }
 
 if [[ "${DRY_RUN:-}" != "false" ]]; then
-  gum confirm "Dry run mode enabled. Proceed with release steps without pushing/publishing?" || fatal "Release aborted by user."
+  gum confirm "Dry run mode enabled. Proceed?" || fatal "Release aborted by user."
 fi
-
-need git git-cliff gum gh sed grep cut tr mktemp
-
-git rev-parse --is-inside-work-tree >/dev/null 2>&1 || fatal "Not a git repository."
 
 if [[ -n "$(git status --porcelain)" ]]; then
   git status --porcelain | sed 's/^/  /' >&2 || true
-  fatal "Working directory is dirty. Please commit or stash changes before releasing."
+  fatal "Working directory is dirty."
 fi
 
-BRANCH="$(git branch --show-current)"
-[[ -n "$BRANCH" ]] || fatal "Detached HEAD. Please checkout a branch before releasing."
+git fetch --tags >/dev/null 2>&1
 
-git rev-parse --abbrev-ref --symbolic-full-name "@{u}" >/dev/null 2>&1 \
-  || fatal "No upstream set for '$BRANCH'. Set upstream before releasing."
-
-git fetch --tags >/dev/null 2>&1 || fatal "Failed to fetch tags."
-
-if [[ "$(git rev-list --count "@{u}..HEAD")" != "0" ]]; then
-  fatal "You have unpushed commits. Push before releasing."
-fi
-if [[ "$(git rev-list --count "HEAD..@{u}")" != "0" ]]; then
-  fatal "Remote has new commits. Pull/rebase before releasing."
-fi
-
-CURRENT_VERSION="$(grep -E '^mod\.version=' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')"
-[[ -n "$CURRENT_VERSION" ]] || fatal "Could not read current version from gradle.properties."
-
+CURRENT_VERSION="$(tomato get mod.version stonecutter.properties.toml)"
 NEXT_VERSION="$(git-cliff --unreleased --bumped-version | tr -d '[:space:]')"
 NEXT_VERSION="${NEXT_VERSION#v}"
+
 [[ -n "$NEXT_VERSION" ]] || fatal "git-cliff did not produce a bumped version."
+[[ "$CURRENT_VERSION" != "$NEXT_VERSION" ]] || fatal "No new version detected. Already at $CURRENT_VERSION."
 
-if [[ "$CURRENT_VERSION" == "$NEXT_VERSION" ]]; then
-  fatal "No new version detected. Current version is already $CURRENT_VERSION."
-fi
-
-git rev-parse "v$NEXT_VERSION" >/dev/null 2>&1 && fatal "Tag v$NEXT_VERSION already exists."
-
-[[ -n "${MODRINTH_TOKEN:-}" ]] || fatal "MODRINTH_TOKEN environment variable is not set (or empty)."
-[[ -n "${CURSEFORGE_TOKEN:-}" ]] || fatal "CURSEFORGE_TOKEN environment variable is not set (or empty)."
+[[ -n "${MODRINTH_TOKEN:-}" ]] || fatal "MODRINTH_TOKEN is not set."
+[[ -n "${CURSEFORGE_TOKEN:-}" ]] || fatal "CURSEFORGE_TOKEN is not set."
 
 RELEASE_NOTES="$(git-cliff --unreleased --strip all)"
 [[ -n "$RELEASE_NOTES" ]] || fatal "Release notes are empty."
 
 info "Releasing... $CURRENT_VERSION -> $NEXT_VERSION"
 info "Release notes:"
-info "$RELEASE_NOTES"
+echo "$RELEASE_NOTES"
 
 cleanup() {
   if [[ -n "$(git status --porcelain)" ]]; then
-    git restore --source=HEAD --staged --worktree gradle.properties >/dev/null 2>&1 || true
+    git restore --source=HEAD --staged --worktree stonecutter.properties.toml >/dev/null 2>&1 || true
   fi
 }
 trap cleanup ERR INT
 
-sed -i '' -E "s/^mod\.version=.*/mod.version=$NEXT_VERSION/" gradle.properties
-info "Updated gradle.properties with new version."
-
-info "Committing version bump..."
-git add gradle.properties
-git commit -m "chore(release): v$NEXT_VERSION"
-git tag "v$NEXT_VERSION"
+tomato set mod.version "$NEXT_VERSION" stonecutter.properties.toml
 
 info "Building & publishing..."
 rm -f build/libs/* || true
 CHANGELOG=$RELEASE_NOTES ./gradlew buildAndCollect publishMods --warning-mode all
 
+git add stonecutter.properties.toml
+git commit -m "chore(release): v$NEXT_VERSION"
+git tag "v$NEXT_VERSION"
+
 tmp_notes="$(mktemp)"
 printf '%s\n' "$RELEASE_NOTES" > "$tmp_notes"
 
-info "Pushing the following commits and tag to origin:"
-COMMITS="$(git rev-list --no-merges --pretty=oneline "v$CURRENT_VERSION..HEAD" | grep -v "^commit ")"
-info "$COMMITS"
-
-gum confirm "Push release to origin?" || fatal "Release aborted by user."
-
-if_prod git push origin "$BRANCH" "v$NEXT_VERSION"
-if_prod gh release create "v$NEXT_VERSION" -F "$tmp_notes" build/libs/*
+BRANCH="$(git branch --show-current)"
+if gum confirm "Push v$NEXT_VERSION to origin?"; then
+  if_prod git push origin "$BRANCH" "v$NEXT_VERSION"
+  if_prod gh release create "v$NEXT_VERSION" -F "$tmp_notes" build/libs/*
+  info "Done!"
+else
+  info "Skipped push. Tag v$NEXT_VERSION is local only."
+fi
 
 rm -f "$tmp_notes"
-
-info "Done!"

@@ -1,4 +1,6 @@
+output: true
+
 pre-push:
   parallel: true
   jobs:
-    - run: ./gradlew -q build
+    - run: ./gradlew build
