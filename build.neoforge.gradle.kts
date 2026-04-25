@@ -31,11 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation("thedarkcolour:kotlinforforge-neoforge:${prop("deps.kff")}")
-
-    implementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}") {
-        exclude(group = "thedarkcolour", module = "kotlinforforge-neoforge")
-    }
+    implementation("thedarkcolour:kotlinforforge-neoforge:${prop("deps.kff.version")}")
 
     listOf(
         "sodium",
@@ -54,11 +50,11 @@ dependencies {
 }
 
 neoForge {
-    version = prop("deps.neoforge")
+    version = prop("deps.neoforge.version")
 
-    ifProp("deps.parchment") {
+    ifProp("deps.parchment.version") {
         parchment {
-            mappingsVersion = prop("deps.parchment")
+            mappingsVersion = prop("deps.parchment.version")
             minecraftVersion = mcVersion
         }
     }

@@ -1,0 +1,197 @@
+loomx.loom_version = "1.16-SNAPSHOT"
+
+[mod]
+id = "xmxw"
+version = "2.9.0"
+name = "Xaero's Maps x Waystones"
+group = "dev.alinco8"
+authors = "Alinco8"
+license = "MIT"
+description = "A mod that integrates Xaero's Minimap/World Map with Waystones."
+
+[mod.links]
+sources = "https://github.com/Alinco8/XaerosMaps-x-Waystones"
+homepage = "https://github.com/Alinco8/XaerosMaps-x-Waystones"
+issues = "https://github.com/Alinco8/XaerosMaps-x-Waystones/issues"
+forge_updates = "https://api.modrinth.com/updates/iv2jCzkP/forge_updates.json"
+neoforge_updates = "https://api.modrinth.com/updates/iv2jCzkP/forge_updates.json?neoforge=only"
+
+[pub]
+modrinth.id = "iv2jCzkP"
+curseforge.id = 1340197
+
+[fabric.deps]
+fabric_loader = { version = "0.19.2", range = "0.18," }
+fabric_kotlin = { version = "1.13.8+kotlin.2.3.0", range = "1.13," }
+fabric_api.range = "*"
+
+[deps]
+yacl.range = "3,"
+xaeros_minimap.range = "25,"
+
+## ==== 26.1.2 ==== ##
+
+["26.1.2"]
+pub.minecraft = "26.1 26.1.1 26.1.2"
+
+["26.1.2".deps]
+minecraft.range = "26.1, 26.2"
+java.version = "25"
+balm.range = "26,"
+waystones.range = "26,"
+xaeros_minimap.version = "25.3.11"
+xaeros_world_map.version = "1.40.14"
+xaeros_lib.version = "1.1.13"
+
+[fabric."26.1.2".deps]
+fabric_api.version = "0.146.1+26.1.2"
+yacl.version = "3.9.2+26.1-fabric"
+balm.version = "26.1.2.4+fabric-26.1.2"
+waystones.version = "7976457"
+shogi.version = "7939266"
+modmenu.version = "18.0.0-alpha.8"
+
+[neoforge."26.1.2".deps]
+neoforge = { version = "26.1.2.29-beta", range = "26.1, 26.2" }
+kff = { version = "6.2.0", range = "6," }
+yacl.version = "3.9.2+26.1-neoforge"
+balm.version = "26.1.2.4+neoforge-26.1.2"
+waystones.version = "7976460"
+shogi.version = "7939269"
+
+## ==== 1.21.11 ==== ##
+
+["1.21.11"]
+pub.minecraft = "1.21.11"
+
+["1.21.11".deps]
+minecraft.range = "1.21.11, 1.22"
+parchment.version = "2025.12.20"
+java.version = "21"
+balm.range = "21,"
+waystones.range = "21,"
+xaeros_world_map.version = "1.40.6"
+xaeros_lib.version = "1.0.45"
+
+[fabric."1.21.11".deps]
+fabric_api.version = "0.140.2+1.21.11"
+yacl.version = "3.8.2+1.21.11-fabric"
+balm.version = "21.11.3+fabric-1.21.11"
+waystones.version = "21.11.4+fabric-1.21.11"
+xaeros_minimap.version = "25.3.5"
+modmenu.version = "17.0.0-beta.1"
+
+[neoforge."1.21.11".deps]
+neoforge = { version = "21.11.38-beta", range = "21.11, 22" }
+kff = { version = "6.0.0", range = "6," }
+yacl.version = "3.8.2+1.21.11-neoforge"
+balm.version = "21.11.3+neoforge-1.21.11"
+waystones.version = "21.11.4+neoforge-1.21.11"
+xaeros_minimap.version = "25.3.6"
+
+## ==== 1.21.6 ==== ##
+
+["1.21.6"]
+pub.minecraft = "1.21.6 1.21.7 1.21.8 1.21.9 1.21.10"
+
+["1.21.6".deps]
+minecraft.range = "1.21.6, 1.21.11"
+parchment.version = "2025.06.29"
+java.version = "21"
+balm.range = "21,"
+waystones.range = "21,"
+xaeros_minimap.version = "1.21.5-25.3.5"
+xaeros_world_map.version = "1.21.5-1.40.6"
+xaeros_lib.version = "1.21.5-1.0.45"
+
+[fabric."1.21.6".deps]
+fabric_api.version = "0.116.7+1.21.6"
+yacl.version = "3.8.2+1.21.6-fabric"
+balm.version = "21.6.1+fabric-1.21.6"
+waystones.version = "21.6.1+fabric-1.21.6"
+modmenu.version = "11.0.3"
+
+[neoforge."1.21.6".deps]
+neoforge = { version = "21.6.20-beta", range = "21.6, 21.11" }
+kff = { version = "5.10.0", range = "5," }
+yacl.version = "3.8.2+1.21.6-neoforge"
+balm.version = "21.6.3+neoforge-1.21.6"
+waystones.version = "21.6.1+neoforge-1.21.6"
+
+## ==== 1.21.1 ==== ##
+
+["1.21.1"]
+pub.minecraft = "1.21 1.21.1 1.21.2 1.21.3 1.21.4 1.21.5"
+
+["1.21.1".deps]
+minecraft.range = "1.21, 1.21.6"
+parchment.version = "2024.11.17"
+java.version = "21"
+balm.range = "21,"
+waystones.range = "21,"
+xaeros_minimap.version = "25.3.5"
+xaeros_world_map.version = "1.40.6"
+xaeros_lib.version = "1.0.45"
+
+[fabric."1.21.1".deps]
+fabric_api.version = "0.116.7+1.21.1"
+yacl.version = "3.8.2+1.21.1-fabric"
+balm.version = "21.0.55+fabric-1.21.1"
+waystones.version = "21.1.25+fabric-1.21.1"
+modmenu.version = "11.0.3"
+
+[neoforge."1.21.1".deps]
+neoforge = { version = "21.1.219", range = "21, 21.6" }
+kff = { version = "5.10.0", range = "5," }
+yacl.version = "3.8.2+1.21.1-neoforge"
+balm.version = "21.0.55+neoforge-1.21.1"
+waystones.version = "21.1.25+neoforge-1.21.1"
+
+## ==== 1.20.4 ==== ##
+
+[neoforge."1.20.4"]
+pub.minecraft = "1.20.1 1.20.2 1.20.3 1.20.4 1.20.5 1.20.6"
+
+[neoforge."1.20.4".deps]
+minecraft.range = "1.20.1, 1.21"
+parchment.version = "2024.04.14"
+java.version = "17"
+neoforge = { version = "20.4.251", range = "20.1, 21" }
+kff = { version = "4.12.0", range = "4," }
+yacl.version = "3.6.2+1.20.4-neoforge"
+balm = { version = "9.0.9+neoforge-1.20.4", range = "8," }
+waystones = { version = "16.0.5+neoforge-1.20.4", range = "15," }
+xaeros_minimap.version = "25.3.5"
+xaeros_world_map.version = "1.40.6"
+xaeros_lib.version = "1.0.45"
+
+## ==== 1.20.1 ==== ##
+
+["1.20.1"]
+pub.minecraft = "1.20 1.20.1 1.20.2 1.20.3 1.20.4 1.20.5 1.20.6"
+
+["1.20.1".deps]
+minecraft.range = "1.20, 1.21"
+parchment.version = "2023.09.03"
+java.version = "17"
+balm.range = "7,"
+waystones.range = "14,"
+xaeros_world_map.version = "1.40.6"
+
+[fabric."1.20.1".deps]
+fabric_api.version = "0.92.6+1.20.1"
+yacl.version = "3.6.6+1.20.1-fabric"
+balm.version = "7.3.38+fabric-1.20.1"
+waystones.version = "14.1.17+fabric-1.20.1"
+xaeros_minimap.version = "25.3.5"
+xaeros_lib.version = "1.0.46"
+modmenu.version = "7.2.2"
+
+[forge."1.20.1".deps]
+forge = { version = "47.4.10", range = "46," }
+kff = { version = "4.12.0", range = "4," }
+yacl.version = "3.6.6+1.20.1-forge"
+balm.version = "7.3.38+forge-1.20.1"
+waystones.version = "14.1.17+forge-1.20.1"
+xaeros_minimap.version = "25.3.6"
+xaeros_lib.version = "1.0.45"

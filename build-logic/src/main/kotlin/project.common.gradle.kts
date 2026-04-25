@@ -56,31 +56,32 @@ fletchingTable {
 dependencies {
     fletchingTable.minecraft = mcVersion
 
-    if (prop("deps.waystones").contains('.')) {
-        modImplementation("maven.modrinth:waystones:${prop("deps.waystones")}")
+    if (prop("deps.waystones.version").contains('.')) {
+        modImplementation("maven.modrinth:waystones:${prop("deps.waystones.version")}")
     } else {
-        modImplementation("curse.maven:waystones-245755:${prop("deps.waystones")}")
+        modImplementation("curse.maven:waystones-245755:${prop("deps.waystones.version")}")
     }
-    modImplementation("maven.modrinth:balm:${prop("deps.balm")}")
-
-    val minimapParts = prop("deps.xaeros_minimap").split('-').reversed()
-    val minimapMc = minimapParts.getOrNull(1)
-    val minimapVersion = minimapParts[0]
-    modImplementation("xaero.minimap:xaerominimap-$loaderName-${minimapMc ?: mcVersion}:$minimapVersion")
-
-    val worldMapParts = prop("deps.xaeros_world_map").split('-').reversed()
-    val worldMapMc = worldMapParts.getOrNull(1)
-    val worldMapVersion = worldMapParts[0]
-    modImplementation("xaero.map:xaeroworldmap-$loaderName-${worldMapMc ?: mcVersion}:$worldMapVersion")
-
-    val libParts = prop("deps.xaeros_lib").split('-').reversed()
-    val libMc = libParts.getOrNull(1)
-    val libVersion = libParts[0]
-    modImplementation("xaero.lib:xaerolib-$loaderName-${libMc ?: mcVersion}:$libVersion")
-
-    ifProp("deps.shogi") {
+    modImplementation("maven.modrinth:balm:${prop("deps.balm.version")}")
+    ifProp("deps.shogi.version") {
         modImplementation("curse.maven:shogi-1475746:$it")
     }
+
+    modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl.version")}") {
+        exclude(group = "thedarkcolour", module = "kotlinforforge-neoforge")
+    }
+
+    fun xaeroImplementation(type: String, group: String? = null) {
+        val parts = prop("deps.xaeros_$type.version").split('-').reversed()
+        val version = parts[0]
+        val mc = parts.getOrNull(1)
+
+        val cleanType = type.filter { it != '_' }
+        modImplementation("xaero.${group ?: cleanType}:xaero$cleanType-$loaderName-${mc ?: mcVersion}:$version")
+    }
+
+    xaeroImplementation("lib")
+    xaeroImplementation("minimap")
+    xaeroImplementation("world_map", "map")
 }
 
 sourceSets {
@@ -92,12 +93,12 @@ sourceSets {
 java {
     withSourcesJar()
     toolchain {
-        languageVersion = JavaLanguageVersion.of(prop("deps.java").toInt())
+        languageVersion = JavaLanguageVersion.of(prop("deps.java.version").toInt())
     }
 }
 
 kotlin {
-    jvmToolchain(prop("deps.java").toInt())
+    jvmToolchain(prop("deps.java.version").toInt())
 }
 
 tasks {

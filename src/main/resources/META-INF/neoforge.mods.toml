@@ -1,14 +1,14 @@
 modLoader="kotlinforforge"
 loaderVersion="${deps.kff}"
 license="${mod.license}"
-issueTrackerURL="${mod.issues_url}"
+issueTrackerURL="${mod.links.issues}"
 
 [[mods]]
 modId="${mod.id}"
 version="${mod.version}+${env.minecraft}-${env.loader}"
 displayName="${mod.name}"
-updateJSONURL="${mod.neoforge_updates_url}"
-displayURL="${mod.homepage_url}"
+updateJSONURL="${mod.links.neoforge_updates}"
+displayURL="${mod.links.homepage}"
 logoFile="icon.png"
 authors="${mod.authors}"
 description='''${mod.description}'''

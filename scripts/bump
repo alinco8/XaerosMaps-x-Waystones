@@ -27,14 +27,14 @@ for version in versions/*; do
     neoforge)
       prefix=${mc/1./}
       latest_neo=$(echo "$neo_versions" | grep "^$prefix\." | tail -n 1)
-      current_neo=$(< "versions/$version/gradle.properties" grep "deps.neoforge=" | cut -d= -f2 | tr -d ' ')
+      current_neo=$(< "versions/$version/gradle.properties" grep "deps.neoforge.version=" | cut -d= -f2 | tr -d ' ')
       if [ "$current_neo" = "$latest_neo" ]; then
         info "NeoForge is already up to date at $current_neo"
         continue
       fi
       info "Updating NeoForge from $current_neo to $latest_neo"
 
-      sed -i '' "s/deps.neoforge=$current_neo/deps.neoforge=$latest_neo/" "versions/$version/gradle.properties"
+      sed -i '' "s/deps.neoforge.version=$current_neo/deps.neoforge.version=$latest_neo/" "versions/$version/gradle.properties"
 
       ;;
     *)

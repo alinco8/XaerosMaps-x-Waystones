@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import buildlogic.ifProp
 import buildlogic.prop
 import buildlogic.strictMaven
 
@@ -32,12 +31,11 @@ dependencies {
     loomx.applyMojangMappings()
 
     minecraft("com.mojang:minecraft:$mcVersion")
-    modImplementation("net.fabricmc:fabric-loader:${prop("deps.fabric_loader")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric_api")}")
-    modImplementation("net.fabricmc:fabric-language-kotlin:${prop("deps.fabric_kotlin")}")
+    modImplementation("net.fabricmc:fabric-loader:${prop("deps.fabric_loader.version")}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric_api.version")}")
+    modImplementation("net.fabricmc:fabric-language-kotlin:${prop("deps.fabric_kotlin.version")}")
 
-    modImplementation("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
-    modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}")
+    modImplementation("com.terraformersmc:modmenu:${prop("deps.modmenu.version")}")
 
     listOf(
         "sodium",

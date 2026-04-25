@@ -35,8 +35,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation("thedarkcolour:kotlinforforge:${prop("deps.kff")}")
-    modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl")}")
+    modImplementation("thedarkcolour:kotlinforforge:${prop("deps.kff.version")}")
 
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
     annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5")
@@ -44,11 +43,11 @@ dependencies {
 }
 
 legacyForge {
-    version = "$mcVersion-${prop("deps.forge")}"
+    version = "$mcVersion-${prop("deps.forge.version")}"
 
-    ifProp("deps.parchment") {
+    ifProp("deps.parchment.version") {
         parchment {
-            mappingsVersion = prop("deps.parchment")
+            mappingsVersion = prop("deps.parchment.version")
             minecraftVersion = mcVersion
         }
     }

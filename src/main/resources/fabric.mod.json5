@@ -10,9 +10,9 @@
   license: "${mod.license}",
   icon: "icon.png",
   contact: {
-    homepage: "${mod.homepage_url}",
-    sources: "${mod.sources_url}",
-    issues: "${mod.issues_url}",
+    homepage: "${mod.links.homepage}",
+    sources: "${mod.links.sources}",
+    issues: "${mod.links.issues}",
   },
   mixins: [
     "${mod.id}.mixins.json",

@@ -9,17 +9,19 @@ plugins {
 stonecutter active "1.21.1-neoforge"
 
 stonecutter parameters {
+    val (version, loader) = current.project.split("-", limit = 2)
+    properties.tags(version, loader)
+
     constants.match(
-        node.metadata.project.substringAfter("-"),
-        "fabric", "neoforge", "forge"
+        loader, "fabric", "neoforge", "forge"
     )
 
     dependencies["xaeros-minimap"] =
-        node.project.prop("deps.xaeros_minimap")
+        node.project.prop("deps.xaeros_minimap.version")
     dependencies["waystones"] =
-        node.project.prop("deps.waystones").split('+')[0]
+        node.project.prop("deps.waystones.version").split('+')[0]
     dependencies["balm"] =
-        node.project.prop("deps.balm").split('+')[0]
+        node.project.prop("deps.balm.version").split('+')[0]
 }
 
 stonecutter handlers {
