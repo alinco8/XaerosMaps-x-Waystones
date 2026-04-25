@@ -5,7 +5,7 @@ import buildlogic.prop
 import buildlogic.strictMaven
 
 plugins {
-    id("fabric-loom") version "1.14-SNAPSHOT"
+    id("dev.kikugie.loom-back-compat")
     id("dev.kikugie.fletching-table.fabric")
     id("me.modmuss50.mod-publish-plugin")
     id("project.common")
@@ -28,13 +28,10 @@ repositories {
 }
 
 dependencies {
+    // TODO: Add parchment mappings
+    loomx.applyMojangMappings()
+
     minecraft("com.mojang:minecraft:$mcVersion")
-    mappings(loom.layered {
-        officialMojangMappings()
-        ifProp("deps.parchment") {
-            parchment("org.parchmentmc.data:parchment-$mcVersion:$it")
-        }
-    })
     modImplementation("net.fabricmc:fabric-loader:${prop("deps.fabric_loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric_api")}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${prop("deps.fabric_kotlin")}")
@@ -74,13 +71,13 @@ tasks {
         exclude("META-INF/neoforge.mods.toml", "META-INF/mods.toml")
     }
     named<Copy>("buildAndCollect") {
-        from(remapJar.map { it.archiveFile }, remapSourcesJar.map { it.archiveFile })
+        from(loomx.modJar.map { it.archiveFile }, loomx.modSourcesJar.map { it.archiveFile })
     }
 }
 
 publishMods {
-    file = tasks.remapJar.map { it.archiveFile.get() }
-    additionalFiles.from(tasks.remapSourcesJar.map { it.archiveFile.get() })
+    file = loomx.modJar.map { it.archiveFile.get() }
+    additionalFiles.from(loomx.modSourcesJar.map { it.archiveFile.get() })
 
     val slugs = listOf("fabric-api", "fabric-language-kotlin")
     val optionalSlugs = listOf("modmenu")

@@ -16,6 +16,12 @@ import net.minecraft.resources.ResourceLocation
 import net.blay09.mods.balm.api.Balm
 //? }
 
+//? if waystones: >=16 {
+import net.blay09.mods.waystones.api.Waystone
+//? } else {
+/*import net.blay09.mods.waystones.api.IWaystone as Waystone
+*///? }
+
 import dev.alinco8.xmxw.api.ModdableWaypoint
 import dev.alinco8.xmxw.api.ModdableWaypointSet
 import dev.alinco8.xmxw.config.XMXWConfig
@@ -148,7 +154,9 @@ object XMXWClient {
             event.waystone.name,
             event.waystone.waystoneUid,
         )
-        if (!event.waystone.isValid || event.waystone.waystoneType.toString() != "waystones:waystone") return
+        if (!event.waystone.isValid ||
+            event.waystone.type().toString() != "waystones:waystone"
+        ) return
 
         for (waystonesList in waystones.values) {
             waystonesList.removeIf {
@@ -167,7 +175,7 @@ object XMXWClient {
             *///? } else {
             waystone.name.string,
             //? }
-            waystone.waystoneType,
+            waystone.type(),
             waystone.waystoneUid,
         )
         val dimKey = waystone.dimension.loc()
@@ -299,8 +307,8 @@ object XMXWClient {
     }
 }
 
-//? if >=1.21.10 {
-/*fun <T : Any> ResourceKey<T>.loc() = this.identifier()
-*///? } else {
-fun <T : Any> ResourceKey<T>.loc() = this.location()
-//? }
+fun <T : Any> ResourceKey<T>.loc() =
+        /*?>=1.21.10{*/ /*this.identifier() *//*?}else{*/ this.location() /*?}*/
+
+fun Waystone.type() =
+        /*?>=26{*/ /*this.waystoneKind *//*?}else{*/ this.waystoneType /*?}*/

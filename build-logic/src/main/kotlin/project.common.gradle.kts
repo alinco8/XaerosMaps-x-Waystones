@@ -13,12 +13,21 @@ plugins {
 }
 
 repositories {
-    strictMaven("https://maven.isxander.dev/releases", "dev.isxander") // YACL
+    maven("https://maven.isxander.dev/releases") { // YACL (1.20.x)
+        content {
+            includeVersionByRegex(
+                "dev.isxander",
+                "yet-another-config-lib",
+                "^[^+]+\\+1\\.20.*"
+            )
+        }
+    }
     strictMaven("https://maven.quiltmc.org/repository/release", "org.quiltmc") // QuiltMC
     strictMaven("https://api.modrinth.com/maven", "maven.modrinth") // Modrinth
+    strictMaven("https://beta.cursemaven.com", "curse.maven") // CurseMaven
     strictMaven("https://maven.parchmentmc.org/", "org.parchmentmc") // Parchment
     strictMaven("https://chocolateminecraft.com/maven", "xaero") // Xaero Lib
-    mavenCentral()
+    mavenCentral() // YACL & Other
 }
 
 val (mcVersion, loaderName) = project.name.split("-")
@@ -47,7 +56,11 @@ fletchingTable {
 dependencies {
     fletchingTable.minecraft = mcVersion
 
-    modImplementation("maven.modrinth:waystones:${prop("deps.waystones")}")
+    if (prop("deps.waystones").contains('.')) {
+        modImplementation("maven.modrinth:waystones:${prop("deps.waystones")}")
+    } else {
+        modImplementation("curse.maven:waystones-245755:${prop("deps.waystones")}")
+    }
     modImplementation("maven.modrinth:balm:${prop("deps.balm")}")
 
     val minimapParts = prop("deps.xaeros_minimap").split('-').reversed()
@@ -64,6 +77,10 @@ dependencies {
     val libMc = libParts.getOrNull(1)
     val libVersion = libParts[0]
     modImplementation("xaero.lib:xaerolib-$loaderName-${libMc ?: mcVersion}:$libVersion")
+
+    ifProp("deps.shogi") {
+        modImplementation("curse.maven:shogi-1475746:$it")
+    }
 }
 
 sourceSets {

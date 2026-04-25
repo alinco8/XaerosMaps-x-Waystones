@@ -6,7 +6,7 @@ import buildlogic.strictMaven
 import org.slf4j.event.Level
 
 plugins {
-    id("net.neoforged.moddev") version "2.0.134"
+    id("net.neoforged.moddev") version "2.0.141"
     id("dev.kikugie.fletching-table.neoforge")
     id("me.modmuss50.mod-publish-plugin")
     id("project.common")

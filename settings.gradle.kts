@@ -16,6 +16,7 @@ pluginManagement {
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    id("dev.kikugie.loom-back-compat") version "0.2"
     id("dev.kikugie.stonecutter") version "0.8.1"
 }
 
@@ -30,6 +31,7 @@ stonecutter {
         mc("1.21.1", "neoforge", "fabric") // 1.21~1.21.5
         mc("1.21.6", "neoforge", "fabric") // 1.21.6~1.21.10
         mc("1.21.11", "neoforge", "fabric") // 1.21.1
+        mc("26.1.2", "neoforge", "fabric") // 26.1.2
 
         vcsVersion = "1.21.1-neoforge"
     }
