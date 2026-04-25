@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xaero.map.mods.SupportXaeroMinimap;
 import xaero.map.mods.gui.Waypoint;
@@ -46,5 +47,38 @@ class SupportXaeroMinimapMixin {
         if (waystoneId == null) {return;}
 
         ((ModdableWaypoint) cir.getReturnValue()).xmxw$setWaystoneId(waystoneId);
+    }
+
+    @Inject(
+        method = "disableWaypoint",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void cancelDisableIfModded(Waypoint waypoint, CallbackInfo ci) {
+        if (((ModdableWaypoint) waypoint).xmxw$getWaystoneId() == null) {return;}
+
+        ci.cancel();
+    }
+
+    @Inject(
+        method = "deleteWaypoint",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void cancelDeleteIfModded(Waypoint waypoint, CallbackInfo ci) {
+        if (((ModdableWaypoint) waypoint).xmxw$getWaystoneId() == null) {return;}
+
+        ci.cancel();
+    }
+
+    @Inject(
+        method = "toggleTemporaryWaypoint",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void cancelToggleIfModded(Waypoint waypoint, CallbackInfo ci) {
+        if (((ModdableWaypoint) waypoint).xmxw$getWaystoneId() == null) {return;}
+
+        ci.cancel();
     }
 }
