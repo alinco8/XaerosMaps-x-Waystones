@@ -6,8 +6,17 @@ body = """
     {% for commit in commits %}
         - {% if commit.scope and commit.scope != "release" %}*({{ commit.scope }})* {% endif %}\
             {% if commit.breaking %}[**breaking**] {% endif %}\
+            {{ commit.message | upper_first }}\
             {%- set closed = commit.footers | filter(attribute="token", value="closed") -%}
-            {{ commit.message | upper_first }} {%- if closed | length > 0 %} ({{ closed | map(attribute="value") | join(sep=", ") }}){%- endif -%}
+            {%- if closed | length > 0 %} \
+                ({% for issue in closed
+                    | map(attribute="value")
+                    | join(sep=", ")
+                    | split(pat=", ") %}\
+                    [{{ issue }}](https://github.com/{{ remote.github.owner }}/{{ remote.github.repo }}/issues/{{ issue | trim_start_matches(pat="#") }})\
+                    {% if not loop.last %}, {% endif %}\
+                {% endfor %})\
+            {%- endif -%}
     {% endfor %}
 {% endfor %}
 """
