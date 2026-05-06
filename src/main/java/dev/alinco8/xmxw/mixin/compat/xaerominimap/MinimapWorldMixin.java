@@ -59,8 +59,7 @@ public class MinimapWorldMixin {
         cancellable = true
     )
     private void cancelAddIfModded(WaypointSet set, CallbackInfoReturnable<WaypointSet> cir) {
-        if (!((ModdableWaypointSet) (Object) this.waypointSets.get(
-            set.getName())).xmxw$isModded()) {
+        if (!((ModdableWaypointSet) (Object) set).xmxw$isModded()) {
             return;
         }
         cir.cancel();
