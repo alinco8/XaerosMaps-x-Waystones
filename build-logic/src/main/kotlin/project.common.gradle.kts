@@ -56,14 +56,10 @@ fletchingTable {
 dependencies {
     fletchingTable.minecraft = mcVersion
 
-    if (prop("deps.waystones.version").contains('.')) {
-        modImplementation("maven.modrinth:waystones:${prop("deps.waystones.version")}")
-    } else {
-        modImplementation("curse.maven:waystones-245755:${prop("deps.waystones.version")}")
-    }
+    modImplementation("maven.modrinth:waystones:${prop("deps.waystones.version")}")
     modImplementation("maven.modrinth:balm:${prop("deps.balm.version")}")
     ifProp("deps.shogi.version") {
-        modImplementation("curse.maven:shogi-1475746:$it")
+        modImplementation("maven.modrinth:shogi:$it")
     }
 
     modImplementation("dev.isxander:yet-another-config-lib:${prop("deps.yacl.version")}") {

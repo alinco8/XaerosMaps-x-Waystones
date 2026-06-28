@@ -28,19 +28,19 @@ internal object XMXWToasts {
         //? }
         message: Component,
     ) {
-        //? if >=1.21.4 {
-        /*val toasts = Minecraft.getInstance().toastManager
-        *///? } else {
+        //? if >=26.2 {
+        /*val toasts = Minecraft.getInstance().gui.toastManager()
+        *///? } else if >=1.21.4 {
+//        val toasts = Minecraft.getInstance().toastManager
+        //? } else {
         val toasts = Minecraft.getInstance().toasts
         //? }
 
-        toasts.addToast(
-            SystemToast.multiline(
-                Minecraft.getInstance(),
-                id,
-                Component.literal("Xaero's Maps x Waystones"),
-                message
-            )
+        SystemToast.addOrUpdate(
+            toasts,
+            id,
+            Component.literal("Xaero's Maps x Waystones"),
+            message
         )
     }
 

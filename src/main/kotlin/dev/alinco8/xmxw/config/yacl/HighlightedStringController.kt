@@ -2,12 +2,13 @@ package dev.alinco8.xmxw.config.yacl
 
 import dev.isxander.yacl3.api.Option
 import dev.isxander.yacl3.gui.controllers.string.IStringController
+import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
 
 class HighlightedStringController(
     private val opt: Option<String>,
-    private val highlightMap: Map<String, Int>,
+    private val highlightMap: Map<String, ChatFormatting>,
 ) : IStringController<String> {
     override fun getString() = opt.pendingValue()
 

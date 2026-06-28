@@ -93,7 +93,7 @@ object ConfigScreen {
                             .create(opt)
                             .highlightMap(
                                 XMXWClient.replacers.asSequence().associate {
-                                    it.key to ChatFormatting.LIGHT_PURPLE.color!!
+                                    it.key to ChatFormatting.LIGHT_PURPLE
                                 },
                             )
                     }

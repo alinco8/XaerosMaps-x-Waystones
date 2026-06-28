@@ -29,6 +29,36 @@ fabric_api.range = "*"
 yacl.range = "3,"
 xaeros_minimap.range = "25,"
 
+## ==== 26.2 ==== ##
+
+["26.2"]
+pub.minecraft = "26.2"
+
+["26.2".deps]
+minecraft.range = "26.2, 26.3"
+java.version = "25"
+balm.range = "26,"
+waystones.range = "26,"
+xaeros_minimap.version = "26.1.2"
+xaeros_world_map.version = "1.41.0"
+xaeros_lib.version = "1.4.2"
+
+[fabric."26.2".deps]
+fabric_api.version = "0.152.2+26.2"
+yacl.version = "3.9.4+26.1-fabric"
+balm.version = "26.2.0.1+fabric-26.2"
+waystones.version = "26.2.0.1+fabric-26.2"
+shogi.version = "26.2.0.1+fabric-26.2"
+modmenu.version = "18.0.0-alpha.8"
+
+[neoforge."26.2".deps]
+neoforge = { version = "26.2.0.6-beta", range = "26.1, 26.2" }
+kff = { version = "6.2.0", range = "6," }
+yacl.version = "3.9.4+26.1-neoforge"
+balm.version = "26.2.0.1+neoforge-26.2"
+waystones.version = "26.2.0.1+neoforge-26.2"
+shogi.version = "26.2.0.1+neoforge-26.2"
+
 ## ==== 26.1.2 ==== ##
 
 ["26.1.2"]
@@ -47,8 +77,8 @@ xaeros_lib.version = "1.1.13"
 fabric_api.version = "0.146.1+26.1.2"
 yacl.version = "3.9.2+26.1-fabric"
 balm.version = "26.1.2.4+fabric-26.1.2"
-waystones.version = "7976457"
-shogi.version = "7939266"
+waystones.version = "26.1.2.5+fabric-26.1.2"
+shogi.version = "26.1.2.5+fabric-26.1.2"
 modmenu.version = "18.0.0-alpha.8"
 
 [neoforge."26.1.2".deps]
@@ -56,8 +86,8 @@ neoforge = { version = "26.1.2.29-beta", range = "26.1, 26.2" }
 kff = { version = "6.2.0", range = "6," }
 yacl.version = "3.9.2+26.1-neoforge"
 balm.version = "26.1.2.4+neoforge-26.1.2"
-waystones.version = "7976460"
-shogi.version = "7939269"
+waystones.version = "26.1.2.5+neoforge-26.1.2"
+shogi.version = "26.1.2.5+neoforge-26.1.2"
 
 ## ==== 1.21.11 ==== ##
 
