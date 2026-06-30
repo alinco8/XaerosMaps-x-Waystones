@@ -116,6 +116,10 @@ public abstract class WaypointSetMixin implements ModdableWaypointSet {
     ) {
         ci.cancel();
 
+        boolean containsCandidate = waypoints.stream()
+            .anyMatch(wp -> this.list.contains(wp));
+        if (!containsCandidate) return;
+
         if (this.xmxw$_isModded) {
             LOGGER.debug("Prevented removing waypoints from modded set: {}",
                 waypoints.stream().map(Waypoint::getName).toList());
