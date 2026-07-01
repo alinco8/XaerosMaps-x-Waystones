@@ -9,3 +9,4 @@
 **/.kotlin/
 
 .env.keys
+.env
