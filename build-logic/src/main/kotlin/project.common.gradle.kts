@@ -150,6 +150,8 @@ publishMods {
             accessToken = it
             minecraftVersions.addAll(mcVersions)
 
+            environment = CLIENT_ONLY
+
             slugs.forEach(::requires)
         }
     }
@@ -159,7 +161,9 @@ publishMods {
             accessToken = it
             minecraftVersions.addAll(mcVersions)
 
-            clientRequired
+            client = true
+            server = false
+            javaVersions.add(JavaVersion.valueOf(prop("deps.java.version")))
 
             slugs.forEach(::requires)
         }
