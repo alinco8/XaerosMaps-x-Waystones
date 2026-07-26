@@ -52,9 +52,9 @@ shogi.version = "26.2.0.1+fabric-26.2"
 modmenu.version = "18.0.0-alpha.8"
 
 [neoforge."26.2".deps]
-neoforge = { version = "26.2.0.6-beta", range = "26.1, 26.2" }
-kff = { version = "6.2.0", range = "6," }
-yacl.version = "3.9.4+26.1-neoforge"
+neoforge = { version = "26.2.0.6-beta", range = "26.2, 26.3" }
+kff = { version = "6.3.0", range = "6," }
+yacl.version = "3.9.4+26.2-neoforge"
 balm.version = "26.2.0.1+neoforge-26.2"
 waystones.version = "26.2.0.1+neoforge-26.2"
 shogi.version = "26.2.0.1+neoforge-26.2"
