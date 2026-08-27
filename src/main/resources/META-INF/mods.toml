@@ -38,3 +38,10 @@ mandatory=true
 modId="yet_another_config_lib_v3"
 versionRange="${deps.yacl}"
 mandatory=true
+
+[[dependencies.${mod.id}]]
+modId = "xaerominimap"
+type = "incompatible"
+versionRange = "[26.2.0,)"
+ordering = "NONE"
+side = "BOTH"

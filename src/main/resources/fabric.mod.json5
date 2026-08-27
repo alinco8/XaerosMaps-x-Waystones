@@ -5,30 +5,30 @@
   name: "${mod.name}",
   description: "${mod.description}",
   authors: [
-    "${mod.authors}",
+    "${mod.authors}"
   ],
   license: "${mod.license}",
   icon: "icon.png",
   contact: {
     homepage: "${mod.links.homepage}",
     sources: "${mod.links.sources}",
-    issues: "${mod.links.issues}",
+    issues: "${mod.links.issues}"
   },
   mixins: [
-    "${mod.id}.mixins.json",
+    "${mod.id}.mixins.json"
   ],
   environment: "client",
   entrypoints: {
     client: [
       {
         adapter: "kotlin",
-        value: "${mod.group}.${mod.id}.platform.fabric.FabricEntrypointClient",
-      },
+        value: "${mod.group}.${mod.id}.platform.fabric.FabricEntrypointClient"
+      }
     ],
     modmenu: [
       {
         adapter: "kotlin",
-        value: "${mod.group}.${mod.id}.platform.fabric.ModMenuIntegration",
+        value: "${mod.group}.${mod.id}.platform.fabric.ModMenuIntegration"
       }
     ]
   },
@@ -38,6 +38,9 @@
     "waystones": "${deps.waystones}",
     "balm-fabric": "${deps.balm}",
     "xaerominimap": "${deps.xaeros_minimap}",
-    "yet_another_config_lib_v3": "${deps.yacl}",
+    "yet_another_config_lib_v3": "${deps.yacl}"
+  },
+  breaks: {
+    "xaerominimap": ">=26.2.0"
   }
 }

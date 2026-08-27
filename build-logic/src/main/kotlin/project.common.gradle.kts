@@ -163,7 +163,7 @@ publishMods {
 
             client = true
             server = false
-            javaVersions.add(JavaVersion.valueOf(prop("deps.java.version")))
+            javaVersions.add(JavaVersion.toVersion(prop("deps.java.version").toInt()))
 
             slugs.forEach(::requires)
         }
