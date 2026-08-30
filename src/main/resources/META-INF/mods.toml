@@ -41,7 +41,5 @@ mandatory=true
 
 [[dependencies.${mod.id}]]
 modId = "xaerominimap"
-type = "incompatible"
-versionRange = "[26.2.0,)"
-ordering = "NONE"
-side = "BOTH"
+versionRange="(,26.2.0)"
+mandatory=true
